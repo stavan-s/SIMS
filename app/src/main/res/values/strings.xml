@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SIMS</string>
+
+    <string-array name="account_types">
+        <item>Student</item>
+        <item>Faculty</item>
+        <item>Admin</item>
+    </string-array>
+
+</resources>

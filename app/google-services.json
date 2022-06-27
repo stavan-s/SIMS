@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "302723606388",
+    "project_id": "sims-1d8ec",
+    "storage_bucket": "sims-1d8ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302723606388:android:117dc8c70dd0208adaae21",
+        "android_client_info": {
+          "package_name": "com.stavan.sims"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302723606388-bd6jtrt915cnnkki8nr7bfjg03pqkbd4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX7XpOHiGYYtyvwhTXkgg6QL8GXJxztG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302723606388-bd6jtrt915cnnkki8nr7bfjg03pqkbd4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
