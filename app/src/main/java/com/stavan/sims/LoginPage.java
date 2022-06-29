@@ -3,6 +3,7 @@ package com.stavan.sims;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
+import android.webkit.PermissionRequest;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +30,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import org.w3c.dom.Text;
 
@@ -56,7 +63,6 @@ public class LoginPage extends AppCompatActivity {
         passView = findViewById(R.id.pass_visible);
         passView.setBackgroundResource(R.drawable.ic_pass_view);
         fAuth = FirebaseAuth.getInstance();
-        Misc misc = new Misc();
 
         // Creating spinner for selecting account type
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -68,20 +74,33 @@ public class LoginPage extends AppCompatActivity {
 
         // Check if user is already logged in with an account
         if(fAuth.getCurrentUser() != null) {
+
             ProgressDialog dialog = ProgressDialog.show(LoginPage.this, "",
                     "Loading. Please wait...", true);
+
+            String uid = fAuth.getUid();
+            Log.d("AccountUID", uid);
+
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();;
             databaseReference.child("account_type").child(fAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if(task.isSuccessful()) {
-                        String result = task.getResult().getValue().toString();
-                        goToPage(result);
+                        String result = String.valueOf(task.getResult().getValue());
+                        Log.d("SeeResult", result);
+                        if(!result.equals("null")) {
+                            goToPage(result);
+                        }
+                        else {
+                            goToPage("Student");
+                        }
+                    }
+                    else {
+                        goToPage("Student");
                     }
                 }
             });
         }
-
 
         // navigation to reset password page
         forgot.setOnClickListener(new View.OnClickListener() {

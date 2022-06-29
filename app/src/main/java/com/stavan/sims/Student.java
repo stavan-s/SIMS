@@ -3,21 +3,39 @@ package com.stavan.sims;
 public class Student {
 
     private String id;
-    private String name;
-    private String rollno;
-    private String course;
+    private String fName;
+    private String mName;
+    private String lName;
+    private String department;
+    private String className;
+    private String div;
+    private String rollNo;
+    private String ownNumber;
+    private String parentNumber;
 
-    public Student(String id, String name, String rollno, String course) {
+    public Student(String id, String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber) {
         this.id = id;
-        this.name = name;
-        this.rollno = rollno;
-        this.course = course;
+        this.fName = fName;
+        this.mName = mName;
+        this.lName = lName;
+        this.department = department;
+        this.className = className;
+        this.div = div;
+        this.rollNo = rollNo;
+        this.ownNumber = ownNumber;
+        this.parentNumber = parentNumber;
     }
 
-    public Student(String name, String rollno, String course) {
-        this.name = name;
-        this.rollno = rollno;
-        this.course = course;
+    public Student(String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber) {
+        this.fName = fName;
+        this.mName = mName;
+        this.lName = lName;
+        this.department = department;
+        this.className = className;
+        this.div = div;
+        this.rollNo = rollNo;
+        this.ownNumber = ownNumber;
+        this.parentNumber = parentNumber;
     }
 
     public String getId() {
@@ -28,27 +46,76 @@ public class Student {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getfName() {
+        return fName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setfName(String fName) {
+        this.fName = fName;
     }
 
-    public String getRollno() {
-        return rollno;
+    public String getmName() {
+        return mName;
     }
 
-    public void setRollno(String rollno) {
-        this.rollno = rollno;
+    public void setmName(String mName) {
+        this.mName = mName;
     }
 
-    public String getCourse() {
-        return course;
+    public String getlName() {
+        return lName;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setlName(String lName) {
+        this.lName = lName;
     }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getDiv() {
+        return div;
+    }
+
+    public void setDiv(String div) {
+        this.div = div;
+    }
+
+    public String getRollNo() {
+        return rollNo;
+    }
+
+    public void setRollNo(String rollNo) {
+        this.rollNo = rollNo;
+    }
+
+    public String getOwnNumber() {
+        return ownNumber;
+    }
+
+    public void setOwnNumber(String ownNumber) {
+        this.ownNumber = ownNumber;
+    }
+
+    public String getParentNumber() {
+        return parentNumber;
+    }
+
+    public void setParentNumber(String parentNumber) {
+        this.parentNumber = parentNumber;
+    }
+
 }

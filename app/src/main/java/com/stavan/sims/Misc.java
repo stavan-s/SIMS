@@ -1,11 +1,16 @@
 package com.stavan.sims;
 
+import android.provider.ContactsContract;
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -18,7 +23,7 @@ public class Misc {
     public boolean accTypeResult = false;
 
     // Generates a random secure password of 8 characters
-    public String generatePassword() {
+    public static String generatePassword() {
 
         String alphabets = "abcdefghijklmnoprstuvwxyz";
         String digits = "0123456789";
@@ -53,9 +58,58 @@ public class Misc {
 
     // Generates a random number within the provided range
     // helper function for generatePassword()
-    public int randNum(int high) {
+    public static int randNum(int high) {
         Random random = new Random();
         return random.nextInt(high);
+    }
+
+
+    public static void registerStudentAccount(Student student) {
+
+        String email = student.getId();
+        String password = generatePassword();
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+
+        fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+
+                    Log.d("RegisterAccount", "User registered");
+                    addAccountType(fAuth.getUid(), "Student");
+
+                    fAuth.signOut();
+                    Log.d("Password", password);
+                    sendCredentials(student.getfName(), email, password, student.getOwnNumber(), student.getParentNumber());
+                }
+            }
+        });
+    }
+
+    private static void sendCredentials(String name, String id, String password, String ownNumber, String parentNumber) {
+
+        String message = "Credentials for your SIMS app login :\n"
+                        + "Name : " + name + "\n"
+                        + "Email id : " + id + "\n"
+                        + "Password : " + password;
+
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(ownNumber, null, message, null, null);
+
+        Log.d("SMS", "SMS Sent");
+    }
+
+
+    private static void addAccountType(String uid, String accountType) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("account_type").child(uid).setValue(accountType).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    Log.d("AccountTypeAdded", uid);
+                }
+            }
+        });
     }
 
 }
