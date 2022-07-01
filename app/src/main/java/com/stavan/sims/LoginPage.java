@@ -28,8 +28,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -37,6 +39,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import org.w3c.dom.Text;
+
+import java.util.StringTokenizer;
 
 public class LoginPage extends AppCompatActivity {
 
@@ -78,25 +82,17 @@ public class LoginPage extends AppCompatActivity {
             ProgressDialog dialog = ProgressDialog.show(LoginPage.this, "",
                     "Loading. Please wait...", true);
 
-            String uid = fAuth.getUid();
-            Log.d("AccountUID", uid);
 
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();;
-            databaseReference.child("account_type").child(fAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference();;
+            db.child("account_type").child(fAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if(task.isSuccessful()) {
                         String result = String.valueOf(task.getResult().getValue());
-                        Log.d("SeeResult", result);
-                        if(!result.equals("null")) {
-                            goToPage(result);
-                        }
-                        else {
-                            goToPage("Student");
-                        }
-                    }
-                    else {
-                        goToPage("Student");
+                        StringTokenizer accountTypeResult = new StringTokenizer(result);
+                        String accType = accountTypeResult.nextToken();
+
+                        goToPage(accType);
                     }
                 }
             });
@@ -166,16 +162,19 @@ public class LoginPage extends AppCompatActivity {
 
     // function to validate whether the selected account type matches with the actual account type
     private void validateAccountType(String uid, String accountType) {
-        DatabaseReference databaseReference;
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
-        databaseReference.child("account_type").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        db.child("account_type").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
                     String accountTypeResult = task.getResult().getValue().toString();
-                    if (accountTypeResult.equals(accountType)) {
+                    StringTokenizer stringTokenizer = new StringTokenizer(accountTypeResult);
+                    String accType = stringTokenizer.nextToken();
+
+                    if (accType.equals(accountType)) {
                         goToPage(accountType);
+                        finishAffinity();
                     }
                     else {
                         Toast.makeText(LoginPage.this, "'Account type' is not valid for this account", Toast.LENGTH_SHORT).show();

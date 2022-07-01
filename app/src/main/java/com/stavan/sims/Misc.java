@@ -1,11 +1,13 @@
 package com.stavan.sims;
 
+import android.content.Context;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -64,7 +66,7 @@ public class Misc {
     }
 
 
-    public static void registerStudentAccount(Student student) {
+    public static void registerStudentAccount(Context context, Student student) {
 
         String email = student.getId();
         String password = generatePassword();
@@ -75,12 +77,17 @@ public class Misc {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
 
-                    Log.d("RegisterAccount", "User registered");
-                    addAccountType(fAuth.getUid(), "Student");
+                    addStudentDetails(context, student);
+
+                    addAccountType(fAuth.getUid(), "Student", student);
 
                     fAuth.signOut();
-                    Log.d("Password", password);
+
                     sendCredentials(student.getfName(), email, password, student.getOwnNumber(), student.getParentNumber());
+                }
+                else {
+                    Toast.makeText(context, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                    Log.d("ErrorInRegistration", task.getException().toString());
                 }
             }
         });
@@ -100,9 +107,16 @@ public class Misc {
     }
 
 
-    private static void addAccountType(String uid, String accountType) {
+    private static void addAccountType(String uid, String accountType, Student student) {
+
+        String value = "Student "
+                + student.getDepartment() + " "
+                + student.getClassName() + " "
+                + student.getDiv() + " "
+                + student.getRollNo();
+
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("account_type").child(uid).setValue(accountType).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.child("account_type").child(uid).setValue(value).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
@@ -110,6 +124,18 @@ public class Misc {
                 }
             }
         });
+    }
+
+    private static void addStudentDetails(Context context, Student student) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("student_info")
+                .child(student.getDepartment())
+                .child(student.getClassName())
+                .child(student.getDiv())
+                .child(student.getRollNo())
+                .setValue(student);
+
+        Toast.makeText(context, "Student " + student.getfName() + " Registered Successfully", Toast.LENGTH_SHORT).show();
     }
 
 }
