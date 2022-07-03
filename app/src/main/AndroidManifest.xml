@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SIMS">
         <activity
+            android:name=".ConfirmAbsentRollsPage"
+            android:exported="false" />
+        <activity
+            android:name=".AttendancePage"
+            android:exported="false" />
+        <activity
             android:name=".AddLecture"
             android:exported="false" />
         <activity

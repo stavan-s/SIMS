@@ -12,11 +12,15 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/activity_add_new_student.xml" value="0.18229166666666666" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/activity_add_student.xml" value="0.18229166666666666" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/activity_admin_page.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/activity_attendance_page.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/activity_confirm_absent_rolls_page.xml" value="0.10551703346397347" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/activity_faculty_page.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/activity_login_page.xml" value="0.22" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/activity_main.xml" value="0.16822916666666668" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/activity_reset_pass.xml" value="0.18229166666666666" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/activity_user_page.xml" value="0.18229166666666666" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/SIMS/app/src/main/res/layout/custom_listview.xml" value="0.18229166666666666" />
+        <entry key="..\:/Users/Admin/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/activity_list_item.xml" value="0.3333333333333333" />
       </map>
     </option>
   </component>

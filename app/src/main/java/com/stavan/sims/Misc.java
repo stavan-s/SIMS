@@ -17,6 +17,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 // Class to define miscellaneous functions
@@ -70,6 +72,7 @@ public class Misc {
 
         String email = student.getId();
         String password = generatePassword();
+        student.setInitialPass(password);
         FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
         fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -136,6 +139,14 @@ public class Misc {
                 .setValue(student);
 
         Toast.makeText(context, "Student " + student.getfName() + " Registered Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+
+    public static String getDate() {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String date = df.format(c.getTime());
+        return date;
     }
 
 }

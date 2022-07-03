@@ -12,6 +12,7 @@ public class Student {
     private String rollNo;
     private String ownNumber;
     private String parentNumber;
+    private String initialPass;
 
     public Student(String id, String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber) {
         this.id = id;
@@ -26,17 +27,19 @@ public class Student {
         this.parentNumber = parentNumber;
     }
 
-    public Student(String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber) {
-        this.fName = fName;
-        this.mName = mName;
-        this.lName = lName;
-        this.department = department;
-        this.className = className;
-        this.div = div;
-        this.rollNo = rollNo;
-        this.ownNumber = ownNumber;
-        this.parentNumber = parentNumber;
-    }
+
+//    public Student(String id, String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber, String initialPass) {
+//        this.fName = fName;
+//        this.mName = mName;
+//        this.lName = lName;
+//        this.department = department;
+//        this.className = className;
+//        this.div = div;
+//        this.rollNo = rollNo;
+//        this.ownNumber = ownNumber;
+//        this.parentNumber = parentNumber;
+//        this.initialPass = initialPass;
+//    }
 
     public String getId() {
         return id;
@@ -118,4 +121,11 @@ public class Student {
         this.parentNumber = parentNumber;
     }
 
+    public String getInitialPass() {
+        return initialPass;
+    }
+
+    public void setInitialPass(String initialPass) {
+        this.initialPass = initialPass;
+    }
 }
