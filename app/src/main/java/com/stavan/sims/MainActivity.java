@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override public void onPermissionGranted(PermissionGrantedResponse response) {
                         startActivity(new Intent(getApplicationContext(), LoginPage.class));
                         finishAffinity();
-//                        Misc.registerStudentAccount(new Student("stavanshinde2905@gmail.com", "Stavan", "Peter", "Shinde", "CS", "TYCS", "B", "5146", "8291010457", "9764150566"));
                     }
                     @Override public void onPermissionDenied(PermissionDeniedResponse response) {
                         Intent intent = getIntent();

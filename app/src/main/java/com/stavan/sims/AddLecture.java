@@ -36,6 +36,7 @@ public class AddLecture extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_lecture);
 
+
         deptInput = findViewById(R.id.add_lec_dept_name_input);
         classInput = findViewById(R.id.add_lec_class_input);
         divInput = findViewById(R.id.add_lec_div_input);
