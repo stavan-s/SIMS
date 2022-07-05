@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class AddLecture extends AppCompatActivity {
 
@@ -47,10 +48,35 @@ public class AddLecture extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String deptName = deptInput.getText().toString();
-                String className = classInput.getText().toString();
-                String divName = divInput.getText().toString();
-                String lectureName = lectureInput.getText().toString();
+                String deptName = deptInput.getText().toString().trim();
+                String className = classInput.getText().toString().trim();
+                String divName = divInput.getText().toString().trim();
+                String lectureName = lectureInput.getText().toString().trim();
+
+                if(deptName.isEmpty()) {
+                    deptInput.setError("Required");
+                    return;
+                }
+
+                if(className.isEmpty()) {
+                    classInput.setError("Required");
+                    return;
+                }
+
+                if(divName.isEmpty()) {
+                    divInput.setError("Required");
+                    return;
+                }
+
+                if(lectureName.isEmpty()) {
+                    lectureInput.setError("Required");
+                    return;
+                }
+
+                deptName = deptName.toUpperCase();
+                className = className.toUpperCase();
+                divName = divName.toUpperCase();
+                lectureName = lectureName.toUpperCase();
 
 //                deptName = "CS";
 //                className = "TYCS";

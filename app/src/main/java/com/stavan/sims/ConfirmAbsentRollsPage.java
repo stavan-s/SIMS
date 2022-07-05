@@ -37,12 +37,10 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
         setContentView(R.layout.activity_confirm_absent_rolls_page);
 
         Intent intent = getIntent();
-
         deptName = intent.getStringExtra("DeptName").toString();
         className = intent.getStringExtra("ClassName").toString();
         divName = intent.getStringExtra("DivName").toString();
         lectureName = intent.getStringExtra("LecName").toString();
-
         ArrayList<String> absentRollNos = intent.getStringArrayListExtra("absentRollNos");
 
         listView = findViewById(R.id.confirm_listview);
@@ -60,6 +58,10 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
                     absentRollNosString += stringTokenizer.nextToken() + " ";
                 }
 
+                if(absentRollNosString.isEmpty()) {
+                    absentRollNosString = "null";
+                }
+
                 DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                 db.child("attendance_info")
                         .child(deptName)
@@ -71,7 +73,9 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
                         .setValue(absentRollNosString).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                informAbsentees(absentRollNosString);
+                                if(!absentRollNosString.equals("null")) {
+                                    informAbsentees(absentRollNosString);
+                                }
                                 startActivity(new Intent(getApplicationContext(), FacultyPage.class));
                                 finishAffinity();
                             }

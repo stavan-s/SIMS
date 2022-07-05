@@ -1,6 +1,7 @@
 package com.stavan.sims;
 
 import android.content.Context;
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -59,7 +60,7 @@ public class Misc {
                 finalPass += String.valueOf(temp);
             }
         }
-        return finalPass;
+        return finalPass.substring(0, 7);
     }
 
     // Generates a random number within the provided range
@@ -85,11 +86,13 @@ public class Misc {
 
                     addStudentDetails(context, student);
 
-                    addAccountType(fAuth.getUid(), "Student", student);
+                    addStudentAccountType(fAuth.getUid(), "Student", student);
 
                     fAuth.signOut();
 
-                    sendCredentials(student.getfName(), email, password, student.getOwnNumber(), student.getParentNumber());
+//                    sendCredentialsToStudent(student.getfName(), email, password, student.getOwnNumber(), student.getParentNumber());
+
+                    clearAddStudentPageTextFields();
                 }
                 else {
                     Toast.makeText(context, task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -100,8 +103,60 @@ public class Misc {
     }
 
 
+    public static void registerFacultyAccount(Context context, Faculty faculty) {
+
+        String email = faculty.getEmail();
+        String password = generatePassword();
+        faculty.setInitialPass(password);
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+
+        fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+
+                    addFacultyDetails(context, fAuth.getUid(), faculty);
+
+                    addFacultyAccountType(fAuth.getUid(), "Faculty");
+
+                    fAuth.signOut();
+
+//                    sendCredentialsToFaculty(faculty.getfName(), email, password, faculty.getNumber());
+
+                    clearAddFacultyPageTextFields();
+                }
+                else {
+                    Toast.makeText(context, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                    Log.d("ErrorInRegistration", task.getException().toString());
+                }
+            }
+        });
+    }
+
+    private static void clearAddFacultyPageTextFields() {
+        AddNewFaculty obj = new AddNewFaculty();
+        obj.nameInput.setText("");
+        obj.emailInput.setText("");
+        obj.numberInput.setText("");
+        obj.nameInput.requestFocus();
+    }
+
+    private static void clearAddStudentPageTextFields() {
+        AddNewStudent obj = new AddNewStudent();
+        obj.nameInput.setText("");
+        obj.emailInput.setText("");
+        obj.departmentInput.setText("");
+        obj.classInput.setText("");
+        obj.divisionInput.setText("");
+        obj.rollInput.setText("");
+        obj.ownNumberInput.setText("");
+        obj.parentNumberInput.setText("");
+        obj.nameInput.requestFocus();
+    }
+
+
     // function used to send the credentials of an account after account registration
-    private static void sendCredentials(String name, String id, String password, String ownNumber, String parentNumber) {
+    private static void sendCredentialsToStudent(String name, String id, String password, String ownNumber, String parentNumber) {
 
         String message = "Credentials for your SIMS app login :\n"
                         + "Name : " + name + "\n"
@@ -110,13 +165,27 @@ public class Misc {
 
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(ownNumber, null, message, null, null);
+        smsManager.sendTextMessage(parentNumber, null, message, null, null);
+
+        Log.d("SMS", "SMS Sent");
+    }
+
+    private static void sendCredentialsToFaculty(String name, String id, String password, String number) {
+
+        String message = "Credentials for your SIMS app login :\n"
+                + "Name : " + name + "\n"
+                + "Email id : " + id + "\n"
+                + "Password : " + password;
+
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(number, null, message, null, null);
 
         Log.d("SMS", "SMS Sent");
     }
 
 
     // function used to add the account type (for login verification) of an account
-    private static void addAccountType(String uid, String accountType, Student student) {
+    private static void addStudentAccountType(String uid, String accountType, Student student) {
 
         String value = "Student "
                 + student.getDepartment() + " "
@@ -136,6 +205,21 @@ public class Misc {
     }
 
 
+    private static void addFacultyAccountType(String uid, String accountType) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("account_type")
+                .child(uid)
+                .setValue(accountType).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+
+                        }
+                    }
+                });
+    }
+
+
     // function used to add student's details (in object form) into the database
     private static void addStudentDetails(Context context, Student student) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
@@ -147,6 +231,23 @@ public class Misc {
                 .setValue(student);
 
         Toast.makeText(context, "Student " + student.getfName() + " Registered Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+
+    private static void addFacultyDetails(Context context, String uid, Faculty faculty) {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("faculty_info")
+                .child(uid)
+                .setValue(faculty).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+
+                        }
+                    }
+                });
+
+        Toast.makeText(context, "Faculty " + faculty.getfName() + " " + faculty.getmName() + " Registered Successfully", Toast.LENGTH_SHORT).show();
     }
 
 

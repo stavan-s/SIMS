@@ -27,20 +27,6 @@ public class Student {
         this.parentNumber = parentNumber;
     }
 
-
-//    public Student(String id, String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber, String initialPass) {
-//        this.fName = fName;
-//        this.mName = mName;
-//        this.lName = lName;
-//        this.department = department;
-//        this.className = className;
-//        this.div = div;
-//        this.rollNo = rollNo;
-//        this.ownNumber = ownNumber;
-//        this.parentNumber = parentNumber;
-//        this.initialPass = initialPass;
-//    }
-
     public String getId() {
         return id;
     }

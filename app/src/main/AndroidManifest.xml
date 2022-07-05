@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SIMS">
         <activity
+            android:name=".AddNewFaculty"
+            android:exported="false" />
+        <activity
             android:name=".ConfirmAbsentRollsPage"
             android:exported="false" />
         <activity

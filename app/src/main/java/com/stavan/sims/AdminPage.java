@@ -15,7 +15,7 @@ public class AdminPage extends AppCompatActivity {
 
     Button logoutBtn;
     FirebaseAuth fAuth;
-    ConstraintLayout addStudentBtn, removeStudentBtn;
+    ConstraintLayout addStudentBtn, removeStudentBtn, addFacultyBtn, removeFacultyBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,8 @@ public class AdminPage extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         addStudentBtn = findViewById(R.id.add_student_card);
         removeStudentBtn = findViewById(R.id.remove_student_card);
+        addFacultyBtn = findViewById(R.id.add_faculty_card);
+        removeFacultyBtn = findViewById(R.id.remove_faculty_card);
 
         fAuth.signOut();
 
@@ -49,6 +51,20 @@ public class AdminPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(AdminPage.this, "Remove existing student", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        addFacultyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), AddNewFaculty.class));
+            }
+        });
+        
+        removeFacultyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(AdminPage.this, "Remove existing faculty", Toast.LENGTH_SHORT).show();
             }
         });
         

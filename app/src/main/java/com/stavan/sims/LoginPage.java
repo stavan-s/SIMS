@@ -150,8 +150,12 @@ public class LoginPage extends AppCompatActivity {
 
                             TextView textView = (TextView) spinner.getSelectedView();
                             String accountType = textView.getText().toString();
-
+                            
                             validateAccountType(fAuth.getUid(), accountType);
+                        }
+                        else {
+                            Toast.makeText(LoginPage.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            Log.d("LoginError", task.getException().toString());
                         }
                     }
                 });
