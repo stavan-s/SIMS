@@ -2,6 +2,7 @@ package com.stavan.sims;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,4 +107,5 @@ public class CustomBaseAdapter extends BaseAdapter {
         return rowView;
 
     }
+
 }

@@ -1,6 +1,8 @@
 package com.stavan.sims;
 
-public class Student {
+import java.io.Serializable;
+
+public class Student implements Serializable {
 
     private String id;
     private String fName;
@@ -13,6 +15,7 @@ public class Student {
     private String ownNumber;
     private String parentNumber;
     private String initialPass;
+    private String uid;
 
     public Student(String id, String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber) {
         this.id = id;
@@ -26,6 +29,8 @@ public class Student {
         this.ownNumber = ownNumber;
         this.parentNumber = parentNumber;
     }
+
+    public Student() {}
 
     public String getId() {
         return id;
@@ -113,5 +118,13 @@ public class Student {
 
     public void setInitialPass(String initialPass) {
         this.initialPass = initialPass;
+    }
+
+    public String getuid() {
+        return this.uid;
+    }
+
+    public void setuid(String uid) {
+        this.uid = uid;
     }
 }

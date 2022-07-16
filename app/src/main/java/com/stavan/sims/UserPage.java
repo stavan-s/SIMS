@@ -2,6 +2,7 @@ package com.stavan.sims;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,20 +30,22 @@ import java.util.StringTokenizer;
 
 public class UserPage extends AppCompatActivity {
 
-    TextView display;
+    ConstraintLayout attendanceCard, doubtsCard;
     Button logoutBtn;
     FirebaseAuth fAuth;
+    Student student;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_page);
 
+        attendanceCard = findViewById(R.id.student_page_attendance_card);
+        doubtsCard = findViewById(R.id.student_page_doubts_card);
         logoutBtn = findViewById(R.id.logoutBtn);
-        display = findViewById(R.id.display);
         fAuth = FirebaseAuth.getInstance();
 
-        setName();
+        setStudentDetails();
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,17 +53,41 @@ public class UserPage extends AppCompatActivity {
                 fAuth.signOut();
                 startActivity(new Intent(getApplicationContext(), LoginPage.class));
                 finishAffinity();
+//                Toast.makeText(UserPage.this, student.getfName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        attendanceCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ViewAttendanceRecord.class);
+                intent.putExtra("Student", student);
+                startActivity(intent);
+            }
+        });
+
+        doubtsCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SelectDateForDoubtsPage.class);
+                intent.putExtra("Name", student.getfName() + " " + student.getlName());
+                intent.putExtra("DeptName", student.getDepartment());
+                intent.putExtra("ClassName", student.getClassName());
+                intent.putExtra("DivName", student.getDiv());
+                intent.putExtra("NavigateTo", "DoubtPageStudents");
+                startActivity(intent);
             }
         });
 
     }
 
-    private void setName() {
+    private void setStudentDetails() {
 
         String uid = fAuth.getUid();
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("account_type").child(uid);
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
-        db.addValueEventListener(new ValueEventListener() {
+
+        db.child("account_type").child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String result = String.valueOf(snapshot.getValue(String.class));
@@ -70,18 +98,15 @@ public class UserPage extends AppCompatActivity {
                 String div = st.nextToken();
                 String rollNo = st.nextToken();
 
-                DatabaseReference db1 = FirebaseDatabase.getInstance().getReference();
-                db1.child("student_info").child(dept).child(className).child(div).child(rollNo).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                db.child("student_info").child(dept).child(className).child(div).child(rollNo).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if(task.isSuccessful()) {
-//                            Toast.makeText(UserPage.this, String.valueOf(task.getResult().getValue()), Toast.LENGTH_SHORT).show();
-                            Log.d("ResultDisplay", String.valueOf(task.getResult().getValue()));
-                            DataSnapshot snapshot1 = task.getResult();
-                            String name = String.valueOf(snapshot1.child("fName").getValue());
-                            Log.d("NameOfStudent", name);
-                            display.setText("Welcome " + name);
-                        }
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        student = snapshot.getValue(Student.class);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
 

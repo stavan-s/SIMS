@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 public class AddNewStudent extends AppCompatActivity {
@@ -98,6 +99,10 @@ public class AddNewStudent extends AppCompatActivity {
                     parentNumberInput.setError("Required");
                     return;
                 }
+
+                departmentName = departmentName.toUpperCase();
+                className = className.toUpperCase();
+                divisionName = divisionName.toUpperCase();
 
                 Student student = new Student(email, fName, mName, lName, departmentName, className, divisionName, rollNo, ownNumber, parentNumber);
                 Misc.registerStudentAccount(getApplicationContext(), student);

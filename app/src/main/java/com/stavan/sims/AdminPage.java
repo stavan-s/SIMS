@@ -3,6 +3,7 @@ package com.stavan.sims;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 public class AdminPage extends AppCompatActivity {
 
@@ -21,6 +28,21 @@ public class AdminPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_page);
+
+        // Check permissions
+        Dexter.withContext(this)
+                .withPermission(Manifest.permission.SEND_SMS)
+                .withListener(new PermissionListener() {
+                    @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+
+                    }
+                    @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                    @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
+                }).check();
 
         logoutBtn = findViewById(R.id.logoutBtn);
         fAuth = FirebaseAuth.getInstance();
@@ -50,7 +72,7 @@ public class AdminPage extends AppCompatActivity {
         removeStudentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AdminPage.this, "Remove existing student", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), RemoveStudentPage.class));
             }
         });
         
@@ -64,7 +86,7 @@ public class AdminPage extends AppCompatActivity {
         removeFacultyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AdminPage.this, "Remove existing faculty", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), RemoveFacultyPage.class));
             }
         });
         

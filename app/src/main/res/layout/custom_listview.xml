@@ -12,6 +12,8 @@
             android:text="5146 - Stavan Shinde"
             android:textSize="20sp"
             android:textStyle="bold"
+
+            android:textColor="@color/black"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="10dp"/>
@@ -25,12 +27,13 @@
                     android:id="@+id/listview_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="20dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"/>
+                    android:layout_marginLeft="20dp"
+                    android:button="@drawable/checkbox_selector"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="20sp" />
 
         </RelativeLayout>
 

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.StringTokenizer;
 
 public class ConfirmAbsentRollsPage extends AppCompatActivity {
@@ -53,12 +55,12 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
             public void onClick(View view) {
 
                 absentRollNosString = "";
-                for(int i = 0; i<absentRollNos.size(); i++) {
+                for (int i = 0; i < absentRollNos.size(); i++) {
                     StringTokenizer stringTokenizer = new StringTokenizer(absentRollNos.get(i));
                     absentRollNosString += stringTokenizer.nextToken() + " ";
                 }
 
-                if(absentRollNosString.isEmpty()) {
+                if (absentRollNosString.isEmpty()) {
                     absentRollNosString = "null";
                 }
 
@@ -73,8 +75,8 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
                         .setValue(absentRollNosString).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(!absentRollNosString.equals("null")) {
-                                    informAbsentees(absentRollNosString);
+                                if (!absentRollNosString.equals("null")) {
+//                                    informAbsentees(absentRollNosString);
                                 }
                                 startActivity(new Intent(getApplicationContext(), FacultyPage.class));
                                 finishAffinity();
@@ -83,7 +85,6 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void informAbsentees(String absentRollNos) {
@@ -91,11 +92,11 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
         ArrayList<String> rollNos = new ArrayList<>();
 
         StringTokenizer stringTokenizer = new StringTokenizer(absentRollNos);
-        while(stringTokenizer.hasMoreTokens()) {
+        while (stringTokenizer.hasMoreTokens()) {
             rollNos.add(stringTokenizer.nextToken());
         }
 
-        for(int i = 0; i<rollNos.size(); i++) {
+        for (int i = 0; i < rollNos.size(); i++) {
 
             DatabaseReference db = FirebaseDatabase.getInstance().getReference();
             db.child("student_info")
@@ -115,9 +116,6 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
                             String ownNumberMsg = Misc.getOwnNumberMsg(name, lectureName);
                             String parentNumberMsg = Misc.getParentNumberMsg(name, lectureName);
 
-                            Toast.makeText(ConfirmAbsentRollsPage.this, ownNumberMsg, Toast.LENGTH_LONG).show();
-                            Toast.makeText(ConfirmAbsentRollsPage.this, parentNumberMsg, Toast.LENGTH_LONG).show();
-
 //                            Misc.sendSMS(ownNumber, ownNumberMsg);
 //                            Misc.sendSMS(parentNumber, parentNumberMsg);
                         }
@@ -129,7 +127,7 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
                     });
 
         }
-
     }
-
 }
+
+

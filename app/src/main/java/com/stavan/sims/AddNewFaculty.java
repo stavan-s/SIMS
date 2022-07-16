@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
 
 public class AddNewFaculty extends AppCompatActivity {
 
-    public EditText nameInput, emailInput, numberInput;
+    public EditText nameInput, emailInput, numberInput, deptInput;
     Button registerBtn;
 
     @Override
@@ -28,6 +28,7 @@ public class AddNewFaculty extends AppCompatActivity {
         nameInput = findViewById(R.id.faculty_name_input);
         emailInput = findViewById(R.id.faculty_email_input);
         numberInput = findViewById(R.id.faculty_number_input);
+        deptInput = findViewById(R.id.faculty_dept_input);
         registerBtn = findViewById(R.id.add_faculty_register_btn);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
@@ -35,27 +36,35 @@ public class AddNewFaculty extends AppCompatActivity {
             public void onClick(View view) {
 
                 String name = nameInput.getText().toString().trim();
-                StringTokenizer stringTokenizer = new StringTokenizer(name);
-                String fName = stringTokenizer.nextToken();
-                String mName = stringTokenizer.nextToken();
-                String lName = stringTokenizer.nextToken();
 
                 String email = emailInput.getText().toString().trim();
                 String number = numberInput.getText().toString().trim();
+                String dept = deptInput.getText().toString().trim();
+
+                if(email.isEmpty()) {
+                    emailInput.setError("Required");
+                    return;
+                }
 
                 if(name.isEmpty()) {
                     nameInput.setError("Required");
                     return;
                 }
 
-                if(fName.isEmpty() || mName.isEmpty() || lName.isEmpty()) {
-                    nameInput.setError("Enter full name");
-                    return;
-                }
+                String fName = null, mName = null, lName = null;
+                StringTokenizer stringTokenizer = new StringTokenizer(name);
+                try {
+                    fName = stringTokenizer.nextToken();
+                    mName = stringTokenizer.nextToken();
+                    lName = stringTokenizer.nextToken();
 
-                if(email.isEmpty()) {
-                    emailInput.setError("Required");
-                    return;
+                    if(fName.isEmpty() || mName.isEmpty() || lName.isEmpty()) {
+                        nameInput.setError("Enter full name");
+                        return;
+                    }
+                }
+                catch (Exception e) {
+                    nameInput.setError("Enter full name");
                 }
 
                 if(number.isEmpty()) {
@@ -63,10 +72,16 @@ public class AddNewFaculty extends AppCompatActivity {
                     return;
                 }
 
-//                Toast.makeText(AddNewFaculty.this, fName + " " + mName + " " + lName, Toast.LENGTH_SHORT).show();
+                if(dept.isEmpty()) {
+                    deptInput.setError("Required");
+                    return;
+                }
 
                 Faculty faculty = new Faculty(fName, mName, lName, email, number);
-                Misc.registerFacultyAccount(getApplicationContext(), faculty);
+                Misc.registerFacultyAccount(getApplicationContext(), faculty, dept);
+
+                startActivity(new Intent(getApplicationContext(), AdminPage.class));
+                finishAffinity();
             }
         });
 

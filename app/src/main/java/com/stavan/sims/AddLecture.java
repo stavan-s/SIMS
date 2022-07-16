@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.StringTokenizer;
 
 public class AddLecture extends AppCompatActivity {
 
@@ -93,6 +96,7 @@ public class AddLecture extends AppCompatActivity {
     private void addLecture(String deptName, String className, String divName, String lectureName, String date) {
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
         db.child("attendance_info")
                 .child(deptName)

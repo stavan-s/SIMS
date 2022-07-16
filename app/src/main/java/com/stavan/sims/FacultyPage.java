@@ -14,7 +14,7 @@ public class FacultyPage extends AppCompatActivity {
 
     Button logoutBtn;
     FirebaseAuth fAuth;
-    ConstraintLayout addLectureCard;
+    ConstraintLayout addLectureCard, doubtsCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,7 @@ public class FacultyPage extends AppCompatActivity {
         setContentView(R.layout.activity_faculty_page);
 
         addLectureCard = findViewById(R.id.add_lecture_card);
+        doubtsCard = findViewById(R.id.doubts_card);
         logoutBtn = findViewById(R.id.logoutBtn);
         fAuth = FirebaseAuth.getInstance();
 
@@ -40,6 +41,14 @@ public class FacultyPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), AddLecture.class));
+            }
+        });
+
+
+        doubtsCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ViewDoubts.class));
             }
         });
 

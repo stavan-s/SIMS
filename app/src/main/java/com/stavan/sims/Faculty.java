@@ -7,6 +7,7 @@ public class Faculty {
     private String lName;
     private String email;
     private String number;
+    private String uid;
     private String initialPass;
 
 
@@ -64,6 +65,14 @@ public class Faculty {
 
     public void setInitialPass(String initialPass) {
         this.initialPass = initialPass;
+    }
+
+    public String getuid() {
+        return this.uid;
+    }
+
+    public void setuid(String uid) {
+        this.uid = uid;
     }
 
 }

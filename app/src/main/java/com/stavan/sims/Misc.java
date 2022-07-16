@@ -15,8 +15,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
@@ -28,13 +30,14 @@ import java.util.StringTokenizer;
 // Class to define miscellaneous functions
 public class Misc {
 
-    final private static String ALPHABETS = "abcdefghijklmnoprstuvwxyz";
-    final private static String DIGITS = "0123456789";
-    final private static String SPECIAL_CHARACTERS = "!@#$%^&*?;";
-    private static String finalPass = "";
 
     // Generates a random secure password of 8 characters
     public static String generatePassword() {
+
+        final String ALPHABETS = "abcdefghijklmnoprstuvwxyz";
+        final String DIGITS = "0123456789";
+        final String SPECIAL_CHARACTERS = "!@#$%^&*?;";
+        String finalPass = "";
 
         char temp;
 
@@ -84,6 +87,8 @@ public class Misc {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
 
+                    student.setuid(fAuth.getUid());
+
                     addStudentDetails(context, student);
 
                     addStudentAccountType(fAuth.getUid(), "Student", student);
@@ -92,7 +97,7 @@ public class Misc {
 
 //                    sendCredentialsToStudent(student.getfName(), email, password, student.getOwnNumber(), student.getParentNumber());
 
-                    clearAddStudentPageTextFields();
+//                    clearAddStudentPageTextFields();
                 }
                 else {
                     Toast.makeText(context, task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -103,7 +108,53 @@ public class Misc {
     }
 
 
-    public static void registerFacultyAccount(Context context, Faculty faculty) {
+    public static void removeStudentAccount(Context context, String deptName, String className, String divName, String rollNo) {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        db.child("student_info")
+                .child(deptName)
+                .child(className)
+                .child(divName)
+                .child(rollNo)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String uid = snapshot.child("uid").getValue().toString();
+                        db.child("account_type")
+                                .child(uid)
+                                .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()) {
+
+                                            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                                            db.child("student_info")
+                                                    .child(deptName)
+                                                    .child(className)
+                                                    .child(divName)
+                                                    .child(rollNo)
+                                                    .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            Toast.makeText(context, "Student details removed successfully", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+
+
+    public static void registerFacultyAccount(Context context, Faculty faculty, String dept) {
 
         String email = faculty.getEmail();
         String password = generatePassword();
@@ -115,15 +166,17 @@ public class Misc {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
 
-                    addFacultyDetails(context, fAuth.getUid(), faculty);
+                    faculty.setuid(fAuth.getUid());
 
-                    addFacultyAccountType(fAuth.getUid(), "Faculty");
+                    addFacultyDetails(context, faculty, dept);
+
+                    addFacultyAccountType(fAuth.getUid(), "Faculty", dept, faculty.getNumber());
 
                     fAuth.signOut();
 
 //                    sendCredentialsToFaculty(faculty.getfName(), email, password, faculty.getNumber());
 
-                    clearAddFacultyPageTextFields();
+//                    clearAddFacultyPageTextFields();
                 }
                 else {
                     Toast.makeText(context, task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -205,11 +258,11 @@ public class Misc {
     }
 
 
-    private static void addFacultyAccountType(String uid, String accountType) {
+    private static void addFacultyAccountType(String uid, String accountType, String dept, String number) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         db.child("account_type")
                 .child(uid)
-                .setValue(accountType).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .setValue(accountType + " " + dept + " " + number).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
@@ -234,10 +287,11 @@ public class Misc {
     }
 
 
-    private static void addFacultyDetails(Context context, String uid, Faculty faculty) {
+    private static void addFacultyDetails(Context context, Faculty faculty, String dept) {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         db.child("faculty_info")
-                .child(uid)
+                .child(dept)
+                .child(faculty.getNumber())
                 .setValue(faculty).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -294,4 +348,29 @@ public class Misc {
         return nameInParts;
     }
 
+    public static String getFormattedDate(String clickedDate) {
+
+        StringTokenizer st = new StringTokenizer(clickedDate, "-");
+        String year = st.nextToken();
+        String month = st.nextToken();
+        String day = st.nextToken();
+
+        String formattedDate = year;
+
+        if(month.length()==1) {
+            formattedDate += "-0" + month;
+        }
+        else {
+            formattedDate += "-" + month;
+        }
+
+        if(day.length()==1) {
+            formattedDate += "-0" + day;
+        }
+        else {
+            formattedDate += "-" + day;
+        }
+
+        return formattedDate;
+    }
 }

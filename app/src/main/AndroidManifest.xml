@@ -12,6 +12,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SIMS">
         <activity
+            android:name=".ViewAttendanceRecord"
+            android:exported="false" />
+        <activity
+            android:name=".DoubtPageStudents"
+            android:exported="false" />
+        <activity
+            android:name=".SelectDateForDoubtsPage"
+            android:exported="false" />
+        <activity
+            android:name=".DoubtsPage"
+            android:exported="false" />
+        <activity
+            android:name=".ViewDoubts"
+            android:exported="false" />
+        <activity
+            android:name=".RemoveFacultyPage"
+            android:exported="false" />
+        <activity
+            android:name=".RemoveStudentPage"
+            android:exported="false" />
+        <activity
             android:name=".AddNewFaculty"
             android:exported="false" />
         <activity
