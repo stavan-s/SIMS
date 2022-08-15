@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SIMS">
         <activity
+            android:name=".ViewDefaulters"
+            android:exported="false" />
+        <activity
+            android:name=".DefaultersInfoInput"
+            android:exported="false" />
+        <activity
             android:name=".ViewAttendanceRecord"
             android:exported="false" />
         <activity

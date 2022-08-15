@@ -24,6 +24,8 @@ import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -87,7 +89,7 @@ public class Misc {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
 
-                    student.setuid(fAuth.getUid());
+                    student.setUID(fAuth.getUid());
 
                     addStudentDetails(context, student);
 
@@ -240,14 +242,16 @@ public class Misc {
     // function used to add the account type (for login verification) of an account
     private static void addStudentAccountType(String uid, String accountType, Student student) {
 
-        String value = "Student "
-                + student.getDepartment() + " "
-                + student.getClassName() + " "
-                + student.getDiv() + " "
-                + student.getRollNo();
+        Map<String, String> values = new HashMap<>();
+        values.put("dept_name", student.getDepartment());
+        values.put("class_name", student.getClassName());
+        values.put("div_name", student.getDiv());
+        values.put("roll_no", student.getRollNo());
+        values.put("type", "Student");
+
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("account_type").child(uid).setValue(value).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.child("account_type").child(uid).setValue(values).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {

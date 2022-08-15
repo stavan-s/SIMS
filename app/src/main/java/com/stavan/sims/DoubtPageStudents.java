@@ -77,6 +77,8 @@ public class DoubtPageStudents extends AppCompatActivity {
 
     private void postDoubt(String doubt) {
 
+        doubtInput.setText("");
+
         DatabaseReference db = FirebaseDatabase.getInstance().getReference()
                 .child("lecture_doubts")
                 .child(deptName)
@@ -91,7 +93,6 @@ public class DoubtPageStudents extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
                     Toast.makeText(DoubtPageStudents.this, "Doubt posted successfully!", Toast.LENGTH_SHORT).show();
-                    doubtInput.setText("");
                 }
             }
         });

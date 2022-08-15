@@ -58,6 +58,7 @@ public class ViewAttendanceRecord extends AppCompatActivity {
         student = (Student) getIntent().getSerializableExtra("Student");
 
 
+        // get the date selected by the user
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
@@ -66,12 +67,16 @@ public class ViewAttendanceRecord extends AppCompatActivity {
             public void onDateChanged(DatePicker datePicker, int year, int month, int dayOfMonth) {
                 String clickedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
                 String formattedDate = Misc.getFormattedDate(clickedDate);
+
+                // show a dialog that contains student's attendance
                 showAttendanceDialog(formattedDate);
             }
         });
 
     }
 
+
+    // function to show the dialog containing student's attendance
     private void showAttendanceDialog(String clickedDate){
 
         clearList();
@@ -94,11 +99,15 @@ public class ViewAttendanceRecord extends AppCompatActivity {
 
     }
 
+
+    // function to clear the current list of attendance records to avoid redundant data
     private void clearList() {
         attendanceRecords.clear();
         arrayAdapter.notifyDataSetChanged();
     }
 
+
+    // function used to fetch the attendance from db
     private void getAttendance(String clickedDate, List<Attendance> attendanceRecords) {
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();

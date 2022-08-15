@@ -14,7 +14,7 @@ public class FacultyPage extends AppCompatActivity {
 
     Button logoutBtn;
     FirebaseAuth fAuth;
-    ConstraintLayout addLectureCard, doubtsCard;
+    ConstraintLayout addLectureCard, doubtsCard, defaultersCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +23,11 @@ public class FacultyPage extends AppCompatActivity {
 
         addLectureCard = findViewById(R.id.add_lecture_card);
         doubtsCard = findViewById(R.id.doubts_card);
+        defaultersCard = findViewById(R.id.defaulters_list_card);
         logoutBtn = findViewById(R.id.logoutBtn);
         fAuth = FirebaseAuth.getInstance();
 
-
+        // logout button
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,6 +38,7 @@ public class FacultyPage extends AppCompatActivity {
         });
 
 
+        // click to add a new lecture, to further mark the attendance
         addLectureCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,10 +47,18 @@ public class FacultyPage extends AppCompatActivity {
         });
 
 
+        // click to view student's doubts of any particular lecture
         doubtsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), ViewDoubts.class));
+            }
+        });
+
+        defaultersCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), DefaultersInfoInput.class));
             }
         });
 

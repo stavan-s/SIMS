@@ -42,57 +42,13 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
         setContentView(R.layout.activity_select_date_for_doubts_page);
 
         Intent intent = getIntent();
-        deptName = intent.getStringExtra("DeptName");
-        className = intent.getStringExtra("ClassName");
-        divName = intent.getStringExtra("DivName");
-        lectName = intent.getStringExtra("LectName");
+        deptName = intent.getStringExtra("DeptName").toUpperCase();
+        className = intent.getStringExtra("ClassName").toUpperCase();
+        divName = intent.getStringExtra("DivName").toUpperCase();
 
-//        listView = findViewById(R.id.select_date_for_doubts_page_listview);
-//        dates = new ArrayList<>();
-//        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, dates);
-//        listView.setAdapter(arrayAdapter);
+        checkLectureExists();
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                String selectedDate = dates.get(i).toString();
-//                Intent intent1 = new Intent(getApplicationContext(), DoubtsPage.class);
-//                intent1.putExtra("DeptName", deptName);
-//                intent1.putExtra("ClassName", className);
-//                intent1.putExtra("DivName", divName);
-//                intent1.putExtra("LectName", lectName);
-//                intent1.putExtra("Date", selectedDate);
-//                startActivity(intent1);
-//            }
-//        });
-
-//        ProgressDialog dialog = ProgressDialog.show(this, "",
-//                "Loading. Please wait...", true);
-//
-//        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-//        db.child("attendance_info")
-//                .child(deptName)
-//                .child(className)
-//                .child(divName)
-//                .addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        dates.clear();
-//                        for(DataSnapshot snapshot1 : snapshot.getChildren()) {
-//                            String date = snapshot1.getKey().toString();
-//                            dates.add(date);
-//                            arrayAdapter.notifyDataSetChanged();
-//                        }
-//                        dialog.hide();
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-
-         arrayAdapter = new ArrayAdapter(SelectDateForDoubtsPage.this, android.R.layout.simple_list_item_1 ,lecsList);
+        arrayAdapter = new ArrayAdapter(SelectDateForDoubtsPage.this, android.R.layout.simple_list_item_1 ,lecsList);
 
         datePicker = findViewById(R.id.view_attendance_date_picker);
 
@@ -130,6 +86,7 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
 
         dialog.show();
 
+        // click on the particular lecture to go to its doubts page
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -140,6 +97,7 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
 
                 Intent intent;
 
+                // figure out the activity by which 'this' was started, and navigate to the further activity
                 if(getIntent().getStringExtra("NavigateTo").equals("DoubtsPage"))
                     intent = new Intent(getApplicationContext(), DoubtsPage.class);
                 else {
@@ -162,6 +120,8 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
 
     }
 
+
+    // function used to display the lecture names of the provided date
     private void getLectures(String formattedDate, List<String> lecsList) {
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
@@ -174,18 +134,20 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
 
-                        clearList();
+                        if(task.isSuccessful()) {
+                            clearList();
 
-                        if(task.getResult().getChildrenCount() == 0) {
-                            lecsList.add("No lecture for this day!");
-                            return;
+                            if(task.getResult().getChildrenCount() == 0) {
+                                lecsList.add("No lecture for this day!");
+                                return;
+                            }
+
+                            for(DataSnapshot snapshot : task.getResult().getChildren()) {
+                                lecsList.add(snapshot.getKey().toString());
+                            }
+
+                            arrayAdapter.notifyDataSetChanged();
                         }
-
-                        for(DataSnapshot snapshot : task.getResult().getChildren()) {
-                            lecsList.add(snapshot.getKey().toString());
-                        }
-
-                        arrayAdapter.notifyDataSetChanged();
                     }
                 });
 
@@ -194,5 +156,22 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
     private void clearList() {
         lecsList.clear();
         arrayAdapter.notifyDataSetChanged();
+    }
+
+    private void checkLectureExists() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("lecture_doubts")
+                .child(deptName)
+                .child(className)
+                .child(divName)
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(!task.getResult().exists()) {
+                            Toast.makeText(SelectDateForDoubtsPage.this, "Invalid details were provided", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        }
+                    }
+                });
     }
 }

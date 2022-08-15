@@ -8,36 +8,63 @@
 
     <TextView
         android:id="@+id/confirm_absent_roll_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Confirm Absent Students"
-        android:textSize="24sp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/blue"
+        android:text="Confirm Absentees"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:fontFamily="@font/amaranth"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/confirm_absent_roll_display"
+        />
 
     <ListView
         android:id="@+id/confirm_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="51dp"
+        android:layout_marginBottom="51dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirm_absent_roll_display"
+        app:layout_constraintTop_toBottomOf="@id/confirm_absent_roll_display"
+        app:layout_constraintBottom_toTopOf="@id/confirm_absentees_submit_btn"
         tools:layout_editor_absoluteX="1dp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/confirm_absentees_submit_btn"
+        />
+
     <Button
-        android:id="@+id/confirm_submit_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
+        android:id="@+id/confirm_absentees_submit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/blue"
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="5dp"
+        android:text="Confirm"
+        android:textStyle="bold"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

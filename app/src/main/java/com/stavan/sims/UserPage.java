@@ -45,8 +45,10 @@ public class UserPage extends AppCompatActivity {
         logoutBtn = findViewById(R.id.logoutBtn);
         fAuth = FirebaseAuth.getInstance();
 
+        // get logged in student's details in the student object for further reference
         setStudentDetails();
 
+        // logout current user(student) on button click
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,6 +59,8 @@ public class UserPage extends AppCompatActivity {
             }
         });
 
+
+        // click to view attendance of current student
         attendanceCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +70,8 @@ public class UserPage extends AppCompatActivity {
             }
         });
 
+
+        // click to post doubts
         doubtsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,40 +87,30 @@ public class UserPage extends AppCompatActivity {
 
     }
 
+
+    // function that is used to fetch student details from db, and encapsulate them in an object of Student class
     private void setStudentDetails() {
 
         String uid = fAuth.getUid();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
-
-        db.child("account_type").child(uid).addValueEventListener(new ValueEventListener() {
+        db.child("account_type").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String result = String.valueOf(snapshot.getValue(String.class));
-                StringTokenizer st = new StringTokenizer(result);
-                String type = st.nextToken();
-                String dept = st.nextToken();
-                String className = st.nextToken();
-                String div = st.nextToken();
-                String rollNo = st.nextToken();
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()) {
+                    String deptName = task.getResult().child("dept_name").getValue().toString();
+                    String className = task.getResult().child("class_name").getValue().toString();
+                    String divName = task.getResult().child("div_name").getValue().toString();
+                    String rollNo = task.getResult().child("roll_no").getValue().toString();
 
-                db.child("student_info").child(dept).child(className).child(div).child(rollNo).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        student = snapshot.getValue(Student.class);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+                    db.child("student_info").child(deptName).child(className).child(divName).child(rollNo).get()
+                            .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    student = task.getResult().getValue(Student.class);
+                                }
+                            });
+                }
             }
         });
     }

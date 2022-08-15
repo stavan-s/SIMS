@@ -88,16 +88,14 @@ public class LoginPage extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if(task.isSuccessful()) {
-                        String result = String.valueOf(task.getResult().getValue());
-                        StringTokenizer accountTypeResult = new StringTokenizer(result);
-                        String accType = accountTypeResult.nextToken();
-
+                        String accType = task.getResult().child("type").getValue().toString();
                         goToPage(accType);
+                        finishAffinity();
                     }
                 }
             });
         }
-
+    
         // navigation to reset password page
         forgot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,9 +170,7 @@ public class LoginPage extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
-                    String accountTypeResult = task.getResult().getValue().toString();
-                    StringTokenizer stringTokenizer = new StringTokenizer(accountTypeResult);
-                    String accType = stringTokenizer.nextToken();
+                    String accType = task.getResult().child("type").getValue().toString();
 
                     if (accType.equals(accountType)) {
                         goToPage(accountType);

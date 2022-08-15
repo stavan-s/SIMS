@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DoubtsPage">
+    tools:context=".ViewDefaulters">
 
     <TextView
-        android:id="@+id/doubts_page_display"
+        android:id="@+id/view_defaulters_title_display"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/blue"
-        android:text="Doubts Page"
+        android:text="Defaulters List"
         android:textAlignment="center"
         android:gravity="center"
         android:textSize="30sp"
@@ -22,26 +22,33 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/doubts_page_display"
-        />
-
     <ListView
-        android:id="@+id/doubts_page_listview"
+        android:id="@+id/view_defaulters_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp"
-        app:layout_constraintTop_toBottomOf="@id/doubts_page_display"
+        android:layout_marginTop="51dp"
+        android:layout_marginBottom="61dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_defaulters_title_display"
+        app:layout_constraintBottom_toTopOf="@id/view_defaulters_generate_pdf_btn"
+        tools:layout_editor_absoluteX="1dp" />
+
+    <Button
+        android:id="@+id/view_defaulters_generate_pdf_btn"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:background="@drawable/button_bg"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:fontFamily="@font/amaranth"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:text="Generate Report"
+        android:textStyle="bold"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

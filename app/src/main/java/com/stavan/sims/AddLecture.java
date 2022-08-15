@@ -34,6 +34,7 @@ public class AddLecture extends AppCompatActivity {
 
     EditText deptInput, classInput, divInput, lectureInput;
     Button createBtn;
+    String deptName, className, divName, lectureName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +48,16 @@ public class AddLecture extends AppCompatActivity {
         lectureInput = findViewById(R.id.add_lec_lecture_input);
         createBtn = findViewById(R.id.add_lec_create_btn);
 
+
+        // click to create a new lecture of the specified class
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String deptName = deptInput.getText().toString().trim();
-                String className = classInput.getText().toString().trim();
-                String divName = divInput.getText().toString().trim();
-                String lectureName = lectureInput.getText().toString().trim();
+                deptName = deptInput.getText().toString().toUpperCase().trim();
+                className = classInput.getText().toString().toUpperCase().trim();
+                divName = divInput.getText().toString().toUpperCase().trim();
+                lectureName = lectureInput.getText().toString().toUpperCase().trim();
 
                 if(deptName.isEmpty()) {
                     deptInput.setError("Required");
@@ -81,22 +84,20 @@ public class AddLecture extends AppCompatActivity {
                 divName = divName.toUpperCase();
                 lectureName = lectureName.toUpperCase();
 
-//                deptName = "CS";
-//                className = "TYCS";
-//                divName = "B";
-//                lectureName = "Linux";
-
-                addLecture(deptName, className, divName, lectureName, Misc.getDate());
+                validateInput();
 
             }
         });
 
     }
 
+
+    // function to add the lecture's entry in the db, and navigate to AttendancePage
     private void addLecture(String deptName, String className, String divName, String lectureName, String date) {
 
+        increaseLecCount(deptName, className, divName);
+
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
         db.child("attendance_info")
                 .child(deptName)
@@ -123,6 +124,69 @@ public class AddLecture extends AppCompatActivity {
                     }
                 });
         
+    }
+
+
+    private void increaseLecCount(String deptName, String className, String divName) {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("attendance_info").child(deptName).child(className).child(divName);
+        db.child("lec_count")
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful() && task.getResult().exists()) {
+                            String count = task.getResult().getValue().toString();
+                            if(count.equals("null"))
+                                count = "0";
+                            int c = Integer.parseInt(count);
+                            
+                            db.child("lec_count")
+                                    .setValue(String.valueOf(c+1)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(!task.isSuccessful()) {
+                                                Toast.makeText(AddLecture.this, "Error occurred", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                            
+                        }
+                        else if(!task.getResult().exists()) {
+                            db.child("lec_count")
+                                    .setValue("1").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(!task.isSuccessful()) {
+                                                Toast.makeText(AddLecture.this, "Error Occurred", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
+
+    }
+
+
+    private void validateInput() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        db.child("attendance_info")
+                .child(deptName)
+                .child(className)
+                .child(divName)
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(!task.getResult().exists()) {
+                            Toast.makeText(AddLecture.this, "Invalid details were provided", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        }
+                        else {
+                            addLecture(deptName, className, divName, lectureName, Misc.getDate());
+                        }
+                    }
+                });
     }
 
 }

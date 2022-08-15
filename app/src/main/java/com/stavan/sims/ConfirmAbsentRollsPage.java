@@ -46,7 +46,7 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
         ArrayList<String> absentRollNos = intent.getStringArrayListExtra("absentRollNos");
 
         listView = findViewById(R.id.confirm_listview);
-        submitBtn = findViewById(R.id.confirm_submit_btn);
+        submitBtn = findViewById(R.id.confirm_absentees_submit_btn);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, absentRollNos);
         listView.setAdapter(arrayAdapter);
 
@@ -76,7 +76,8 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (!absentRollNosString.equals("null")) {
-//                                    informAbsentees(absentRollNosString);
+                                    // informAbsentees(absentRollNosString);
+                                    addAbsentCount(absentRollNosString);
                                 }
                                 startActivity(new Intent(getApplicationContext(), FacultyPage.class));
                                 finishAffinity();
@@ -85,6 +86,38 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void addAbsentCount(String absentRollNosString) {
+
+        ArrayList<String> absentRollNosList = new ArrayList<>();
+        StringTokenizer st = new StringTokenizer(absentRollNosString);
+        while(st.hasMoreTokens()) {
+            String rollNo = st.nextToken();
+            absentRollNosList.add(rollNo);
+        }
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("student_info").child(deptName).child(className).child(divName);
+        for(int i = 0; i<absentRollNosList.size(); i++) {
+            String rollNo = absentRollNosList.get(i);
+            db.child(rollNo).child("absentCount").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful() && task.getResult().exists()) {
+                        String count = task.getResult().getValue().toString();
+                        int c = Integer.parseInt(count);
+                        db.child(rollNo).child("absentCount").setValue(String.valueOf(c+1)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(!task.isSuccessful()) {
+                                    Toast.makeText(ConfirmAbsentRollsPage.this, "Error Occurred", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 
     private void informAbsentees(String absentRollNos) {
@@ -116,8 +149,8 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
                             String ownNumberMsg = Misc.getOwnNumberMsg(name, lectureName);
                             String parentNumberMsg = Misc.getParentNumberMsg(name, lectureName);
 
-//                            Misc.sendSMS(ownNumber, ownNumberMsg);
-//                            Misc.sendSMS(parentNumber, parentNumberMsg);
+                            Misc.sendSMS(ownNumber, ownNumberMsg);
+                            Misc.sendSMS(parentNumber, parentNumberMsg);
                         }
 
                         @Override
