@@ -39,7 +39,7 @@ public class AddNewFaculty extends AppCompatActivity {
 
                 String email = emailInput.getText().toString().trim();
                 String number = numberInput.getText().toString().trim();
-                String dept = deptInput.getText().toString().trim();
+                String dept = deptInput.getText().toString().trim().toUpperCase();
 
                 if(email.isEmpty()) {
                     emailInput.setError("Required");

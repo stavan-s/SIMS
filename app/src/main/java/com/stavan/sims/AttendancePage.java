@@ -31,7 +31,7 @@ import java.util.StringTokenizer;
 public class AttendancePage extends AppCompatActivity {
 
     private ListView listView;
-    List<Item> info_list;
+    List<AttendanceEntity> info_list;
     DatabaseReference db;
     Button submitBtn;
 
@@ -46,7 +46,7 @@ public class AttendancePage extends AppCompatActivity {
         String divName = intent.getStringExtra("DivName").toString();
         String lectureName = intent.getStringExtra("LecName").toString();
 
-        info_list = new ArrayList<Item>();
+        info_list = new ArrayList<AttendanceEntity>();
 
         listView = findViewById(R.id.list_view);
         submitBtn = findViewById(R.id.attendance_submit_btn);
@@ -66,7 +66,7 @@ public class AttendancePage extends AppCompatActivity {
 
                 for (int i=0; i<info_list.size(); i++){
                     if (info_list.get(i).isChecked()){
-                        String temp = info_list.get(i).ItemString;
+                        String temp = info_list.get(i).name;
                         absentRollNos.add(temp);
                     }
                 }
@@ -96,7 +96,7 @@ public class AttendancePage extends AppCompatActivity {
                     String rollNo = snapshot1.getKey().toString();
                     String name = snapshot1.child("fName").getValue().toString() + " "
                                     + snapshot1.child("lName").getValue().toString();
-                    info_list.add(new Item(rollNo + " - " + name, false));
+                    info_list.add(new AttendanceEntity(rollNo + " - " + name, false));
                     customBaseAdapter.notifyDataSetChanged();
 
                 }

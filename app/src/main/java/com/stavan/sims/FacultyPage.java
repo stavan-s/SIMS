@@ -14,7 +14,7 @@ public class FacultyPage extends AppCompatActivity {
 
     Button logoutBtn;
     FirebaseAuth fAuth;
-    ConstraintLayout addLectureCard, doubtsCard, defaultersCard;
+    ConstraintLayout addLectureCard, doubtsCard, defaultersCard, studentsInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,7 @@ public class FacultyPage extends AppCompatActivity {
         addLectureCard = findViewById(R.id.add_lecture_card);
         doubtsCard = findViewById(R.id.doubts_card);
         defaultersCard = findViewById(R.id.defaulters_list_card);
+        studentsInfo = findViewById(R.id.stud_info_card);
         logoutBtn = findViewById(R.id.logoutBtn);
         fAuth = FirebaseAuth.getInstance();
 
@@ -59,6 +60,15 @@ public class FacultyPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), DefaultersInfoInput.class));
+            }
+        });
+
+        studentsInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GetStudentDetails.class);
+                intent.putExtra("CallingActivity", "FacultyDashboard");
+                startActivity(intent);
             }
         });
 

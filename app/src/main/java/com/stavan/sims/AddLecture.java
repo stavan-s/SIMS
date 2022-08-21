@@ -171,7 +171,7 @@ public class AddLecture extends AppCompatActivity {
     private void validateInput() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
-        db.child("attendance_info")
+        db.child("student_info")
                 .child(deptName)
                 .child(className)
                 .child(divName)

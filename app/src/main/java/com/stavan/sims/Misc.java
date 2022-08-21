@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -112,6 +114,8 @@ public class Misc {
 
     public static void removeStudentAccount(Context context, String deptName, String className, String divName, String rollNo) {
 
+        removeStudentAuthentication(deptName, className, divName, rollNo);
+
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
         db.child("student_info")
@@ -139,12 +143,155 @@ public class Misc {
                                                     .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
+
                                                             Toast.makeText(context, "Student details removed successfully", Toast.LENGTH_SHORT).show();
                                                         }
                                                     });
                                         }
                                     }
                                 });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+
+    public static void removeStudentAuthentication(String deptName, String className, String divName, String rollNo) {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("student_info")
+                .child(deptName)
+                .child(className)
+                .child(divName)
+                .child(rollNo)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        if(snapshot.exists()) {
+                            String email = snapshot.child("id").getValue().toString();
+                            String pass = snapshot.child("initialPass").getValue().toString();
+
+                            FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                            fAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                    if(task.isSuccessful()) {
+                                        fAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(!task.isSuccessful()) {
+                                                    Log.d("AccountDeleteError", task.getException().toString());
+                                                }
+                                                else {
+                                                    Log.d("AccountDeleteError", "account deletion successful for " + email);
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                }
+                            });
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+
+    public static void removeFacultyAccount(Context context, String deptName, String number) {
+
+        removeSFacultyAuthentication(deptName, number);
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        db.child("faculty_info")
+                .child(deptName)
+                .child(number)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String uid = snapshot.child("uid").getValue().toString();
+                        db.child("account_type")
+                                .child(uid)
+                                .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()) {
+
+                                            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                                            db.child("faculty_info")
+                                                    .child(deptName)
+                                                    .child(number)
+                                                    .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            Toast.makeText(context, "Faculty details removed successfully", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+
+
+    public static void removeSFacultyAuthentication(String deptName, String number) {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("faculty_info")
+                .child(deptName)
+                .child(number)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        if(snapshot.exists()) {
+                            String email = snapshot.child("email").getValue().toString();
+                            String pass = snapshot.child("initialPass").getValue().toString();
+
+                            FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                            fAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                    if(task.isSuccessful()) {
+                                        fAuth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(!task.isSuccessful()) {
+                                                    Log.d("AccountDeleteError", task.getException().toString());
+                                                }
+                                                else {
+                                                    Log.d("AccountDeleteError", "account deletion successful for " + email);
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                }
+                            });
+
+                        }
+
                     }
 
                     @Override
@@ -263,14 +410,20 @@ public class Misc {
 
 
     private static void addFacultyAccountType(String uid, String accountType, String dept, String number) {
+
+        Map<String, String> values = new HashMap<>();
+        values.put("dept_name", dept);
+        values.put("number", number);
+        values.put("type", "Faculty");
+
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         db.child("account_type")
                 .child(uid)
-                .setValue(accountType + " " + dept + " " + number).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .setValue(values).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
-
+                        if(!task.isSuccessful()) {
+                            Log.d("Error", task.getException().toString());
                         }
                     }
                 });
@@ -361,20 +514,19 @@ public class Misc {
 
         String formattedDate = year;
 
-        if(month.length()==1) {
+        if (month.length() == 1) {
             formattedDate += "-0" + month;
-        }
-        else {
+        } else {
             formattedDate += "-" + month;
         }
 
-        if(day.length()==1) {
+        if (day.length() == 1) {
             formattedDate += "-0" + day;
-        }
-        else {
+        } else {
             formattedDate += "-" + day;
         }
 
         return formattedDate;
     }
+
 }

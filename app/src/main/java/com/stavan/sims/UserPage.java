@@ -55,7 +55,6 @@ public class UserPage extends AppCompatActivity {
                 fAuth.signOut();
                 startActivity(new Intent(getApplicationContext(), LoginPage.class));
                 finishAffinity();
-//                Toast.makeText(UserPage.this, student.getfName(), Toast.LENGTH_SHORT).show();
             }
         });
 

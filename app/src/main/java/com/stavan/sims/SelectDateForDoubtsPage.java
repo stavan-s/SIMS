@@ -46,7 +46,7 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
         className = intent.getStringExtra("ClassName").toUpperCase();
         divName = intent.getStringExtra("DivName").toUpperCase();
 
-        checkLectureExists();
+        checkDetailsExists();
 
         arrayAdapter = new ArrayAdapter(SelectDateForDoubtsPage.this, android.R.layout.simple_list_item_1 ,lecsList);
 
@@ -158,9 +158,9 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
         arrayAdapter.notifyDataSetChanged();
     }
 
-    private void checkLectureExists() {
+    private void checkDetailsExists() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("lecture_doubts")
+        db.child("student_info")
                 .child(deptName)
                 .child(className)
                 .child(divName)

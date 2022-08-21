@@ -22,12 +22,12 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-class Item {
+class AttendanceEntity {
     boolean checked;
-    String ItemString;
-    Item(String t, boolean b){
-        ItemString = t;
-        checked = b;
+    String name;
+    AttendanceEntity(String name, boolean checked){
+        this.name = name;
+        this.checked = checked;
     }
 
     public boolean isChecked(){
@@ -35,17 +35,12 @@ class Item {
     }
 }
 
-class ViewHolder {
-    CheckBox checkBox;
-    TextView text;
-}
-
 public class CustomBaseAdapter extends BaseAdapter {
 
     Context context;
-    List<Item> info;
+    List<AttendanceEntity> info;
 
-    public CustomBaseAdapter(Context ctx, List<Item> info) {
+    public CustomBaseAdapter(Context ctx, List<AttendanceEntity> info) {
         this.context = ctx;
         this.info = info;
     }
@@ -74,27 +69,19 @@ public class CustomBaseAdapter extends BaseAdapter {
 
         View rowView = view;
 
-        ViewHolder viewHolder = new ViewHolder();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        rowView = inflater.inflate(R.layout.custom_listview, null);
 
-        if(rowView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.custom_listview, null);
+        CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.listview_checkbox);
+        TextView text = (TextView) rowView.findViewById(R.id.info);
 
-            viewHolder.checkBox = (CheckBox) rowView.findViewById(R.id.listview_checkbox);
-            viewHolder.text = (TextView) rowView.findViewById(R.id.info);
-            rowView.setTag(viewHolder);
-        }
-        else {
-            viewHolder = (ViewHolder) rowView.getTag();
-        }
+        checkBox.setChecked(info.get(i).checked);
 
-        viewHolder.checkBox.setChecked(info.get(i).checked);
+        final String itemStr = info.get(i).name;
+        text.setText(itemStr);
+        checkBox.setTag(i);
 
-        final String itemStr = info.get(i).ItemString;
-        viewHolder.text.setText(itemStr);
-        viewHolder.checkBox.setTag(i);
-
-        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+        checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean newState = !info.get(i).isChecked();
@@ -102,7 +89,7 @@ public class CustomBaseAdapter extends BaseAdapter {
             }
         });
 
-        viewHolder.checkBox.setChecked(isChecked(i));
+        checkBox.setChecked(isChecked(i));
 
         return rowView;
 

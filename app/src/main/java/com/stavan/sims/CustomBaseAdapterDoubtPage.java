@@ -34,12 +34,6 @@ class Doubt {
     }
 }
 
-class ViewHolderDoubtPage {
-    CheckBox checkBox;
-    TextView name;
-    TextView doubt;
-}
-
 public class CustomBaseAdapterDoubtPage extends BaseAdapter {
 
 
@@ -79,37 +73,26 @@ public class CustomBaseAdapterDoubtPage extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        View rowView = view;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.custom_list_view_doubts_page, null);
 
-        ViewHolderDoubtPage viewHolder = new ViewHolderDoubtPage();
+        CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.doubts_page_checkbox);
+        TextView name = (TextView) rowView.findViewById(R.id.doubts_page_name);
+        TextView doubt = (TextView) rowView.findViewById(R.id.doubts_page_doubt);
 
-        if(rowView == null) {
-
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.custom_list_view_doubts_page, null);
-
-            viewHolder.checkBox = (CheckBox) rowView.findViewById(R.id.doubts_page_checkbox);
-            viewHolder.name = (TextView) rowView.findViewById(R.id.doubts_page_name);
-            viewHolder.doubt = (TextView) rowView.findViewById(R.id.doubts_page_doubt);
-            rowView.setTag(viewHolder);
-        }
-        else {
-            viewHolder = (ViewHolderDoubtPage) rowView.getTag();
-        }
-
-        viewHolder.checkBox.setChecked(info.get(i).cleared);
+        checkBox.setChecked(info.get(i).cleared);
 //        if(info.get(i).isCleared()) {
 //            viewHolder.checkBox.setEnabled(false);
 //        }
 
-        final String name = info.get(i).name;
-        viewHolder.name.setText(name);
+        final String nameVal = info.get(i).name;
+        name.setText(nameVal);
 
-        final String doubt = info.get(i).doubt;
-        viewHolder.doubt.setText(doubt);
-        viewHolder.checkBox.setTag(i);
+        final String doubtVal = info.get(i).doubt;
+        doubt.setText(doubtVal);
+        checkBox.setTag(i);
 
-        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+        checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 info.get(i).cleared = !info.get(i).isCleared();
@@ -135,7 +118,7 @@ public class CustomBaseAdapterDoubtPage extends BaseAdapter {
                         });
                 }
         });
-        viewHolder.checkBox.setChecked(isCleared(i));
+        checkBox.setChecked(isCleared(i));
 
 //        viewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            @Override

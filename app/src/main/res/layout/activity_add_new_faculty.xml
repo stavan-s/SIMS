@@ -63,7 +63,7 @@
             android:id="@+id/faculty_name_input"
             android:layout_width="250dp"
             android:layout_height="50dp"
-            android:hint="Name"
+            android:hint="Full Name"
             android:textSize="16sp"
             android:textAlignment="center"
             android:background="@drawable/card_bg"

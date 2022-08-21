@@ -59,7 +59,7 @@ public class LoginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
 
         // Mapping the actual ids to the reference
-        forgot = findViewById(R.id.forgot);
+//        forgot = findViewById(R.id.forgot);
         loginBtn = findViewById(R.id.loginBtn);
         loginEmailInput = findViewById(R.id.loginEmailInput);
         loginPasswordInput = findViewById(R.id.loginPasswordInput);
@@ -83,7 +83,7 @@ public class LoginPage extends AppCompatActivity {
                     "Loading. Please wait...", true);
 
 
-            DatabaseReference db = FirebaseDatabase.getInstance().getReference();;
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
             db.child("account_type").child(fAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -96,13 +96,13 @@ public class LoginPage extends AppCompatActivity {
             });
         }
     
-        // navigation to reset password page
-        forgot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginPage.this, ResetPass.class));
-            }
-        });
+//        // navigation to reset password page
+//        forgot.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(LoginPage.this, ResetPass.class));
+//            }
+//        });
 
 
         // hide/view password toggle option
@@ -130,11 +130,14 @@ public class LoginPage extends AppCompatActivity {
                 String email = loginEmailInput.getText().toString().trim();
                 String pass = loginPasswordInput.getText().toString().trim();
 
-                if(TextUtils.isEmpty(email)) {
+//                email = "admin@gmail.com";
+//                pass = "12345";
+
+                if(email.isEmpty()) {
                     loginEmailInput.setError("Email is Required");
                     return;
                 }
-                if(TextUtils.isEmpty(pass)) {
+                if(pass.isEmpty()) {
                     loginPasswordInput.setError("Password is Required");
                     return;
                 }
@@ -148,12 +151,13 @@ public class LoginPage extends AppCompatActivity {
 
                             TextView textView = (TextView) spinner.getSelectedView();
                             String accountType = textView.getText().toString();
+//                            accountType = "Admin";
                             
                             validateAccountType(fAuth.getUid(), accountType);
                         }
                         else {
-                            Toast.makeText(LoginPage.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                            Log.d("LoginError", task.getException().toString());
+                            Toast.makeText(LoginPage.this, task.getException().getLocalizedMessage().toString(), Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -189,6 +193,7 @@ public class LoginPage extends AppCompatActivity {
 
     // function to go to a particular account related page
     public void goToPage(String accountType) {
+
         if (accountType.equals("Admin")) {
             startActivity(new Intent(getApplicationContext(), AdminPage.class));
             finishAffinity();
@@ -203,6 +208,7 @@ public class LoginPage extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), UserPage.class));
             finishAffinity();
         }
+
     }
 
 }

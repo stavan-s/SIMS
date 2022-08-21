@@ -22,7 +22,7 @@ public class AdminPage extends AppCompatActivity {
 
     Button logoutBtn;
     FirebaseAuth fAuth;
-    ConstraintLayout addStudentBtn, removeStudentBtn, addFacultyBtn, removeFacultyBtn;
+    ConstraintLayout addStudentBtn, removeStudentBtn, addFacultyBtn, removeFacultyBtn, studentsInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class AdminPage extends AppCompatActivity {
         removeStudentBtn = findViewById(R.id.remove_student_card);
         addFacultyBtn = findViewById(R.id.add_faculty_card);
         removeFacultyBtn = findViewById(R.id.remove_faculty_card);
+        studentsInfo = findViewById(R.id.stud_info_card);
 
         fAuth.signOut();
 
@@ -89,6 +90,15 @@ public class AdminPage extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), RemoveFacultyPage.class));
             }
         });
-        
+
+        studentsInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GetStudentDetails.class);
+                intent.putExtra("CallingActivity", "AdminDashboard");
+                startActivity(intent);
+            }
+        });
+
     }
 }

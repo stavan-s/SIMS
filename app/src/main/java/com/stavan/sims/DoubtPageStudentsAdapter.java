@@ -42,33 +42,22 @@ public class DoubtPageStudentsAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        View rowView = view;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.custom_listview_doubts_page_students, null);
 
-        ViewHolderDoubtPage viewHolder = new ViewHolderDoubtPage();
+        CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.doubts_page_students_checkbox);
+        TextView name = (TextView) rowView.findViewById(R.id.doubts_page_students_name);
+        TextView doubt = (TextView) rowView.findViewById(R.id.doubts_page_students_doubt);
 
-        if(rowView == null) {
+        checkBox.setChecked(doubtsList.get(i).cleared);
+        checkBox.setEnabled(false);
 
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.custom_listview_doubts_page_students, null);
+        final String nameVal = doubtsList.get(i).name;
+        name.setText(nameVal);
 
-            viewHolder.checkBox = (CheckBox) rowView.findViewById(R.id.doubts_page_students_checkbox);
-            viewHolder.name = (TextView) rowView.findViewById(R.id.doubts_page_students_name);
-            viewHolder.doubt = (TextView) rowView.findViewById(R.id.doubts_page_students_doubt);
-            rowView.setTag(viewHolder);
-        }
-        else {
-            viewHolder = (ViewHolderDoubtPage) rowView.getTag();
-        }
-
-        viewHolder.checkBox.setChecked(doubtsList.get(i).cleared);
-        viewHolder.checkBox.setEnabled(false);
-
-        final String name = doubtsList.get(i).name;
-        viewHolder.name.setText(name);
-
-        final String doubt = doubtsList.get(i).doubt;
-        viewHolder.doubt.setText(doubt);
-        viewHolder.checkBox.setTag(i);
+        final String doubtVal = doubtsList.get(i).doubt;
+        doubt.setText(doubtVal);
+        checkBox.setTag(i);
 
         return rowView;
     }

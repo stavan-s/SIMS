@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DisplayStudentsInfo">
+
+    <TextView
+        android:id="@+id/students_info_page_display"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/blue"
+        android:text="Student's Information"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:fontFamily="@font/amaranth"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/students_info_page_display"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingTop="20dp"
+        android:paddingStart="10dp"
+        android:orientation="vertical"
+        >
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/nameDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name : "
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/stud_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stavan Peter Shinde"
+                android:layout_toRightOf="@id/nameDisplay"
+                android:paddingStart="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/deptDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Department : "
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/stud_dept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CS"
+                android:layout_toRightOf="@id/deptDisplay"
+                android:paddingStart="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/classDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Class : "
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/stud_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TYCS / B"
+                android:layout_toRightOf="@id/classDisplay"
+                android:paddingStart="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/rollDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Roll No. : "
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/stud_roll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5146"
+                android:layout_toRightOf="@id/rollDisplay"
+                android:paddingStart="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/ownNumberDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Student's No. : "
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/stud_own_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8291810457"
+                android:layout_toRightOf="@id/ownNumberDisplay"
+                android:paddingStart="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/parentNumberDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Parent's No. : "
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/stud_parent_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9764150566"
+                android:layout_toRightOf="@id/parentNumberDisplay"
+                android:paddingStart="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/studPassDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password : "
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/stud_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="abc@123"
+                android:layout_toRightOf="@id/studPassDisplay"
+                android:paddingStart="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

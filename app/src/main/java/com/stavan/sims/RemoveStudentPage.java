@@ -28,9 +28,9 @@ public class RemoveStudentPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String deptName = deptInput.getText().toString().trim();
-                String className = classInput.getText().toString().trim();
-                String divName = divInput.getText().toString().trim();
+                String deptName = deptInput.getText().toString().trim().toUpperCase();
+                String className = classInput.getText().toString().trim().toUpperCase();
+                String divName = divInput.getText().toString().trim().toUpperCase();
                 String rollNo = rollNoInput.getText().toString().trim();
 
                 if(deptName.isEmpty()) {
@@ -52,10 +52,6 @@ public class RemoveStudentPage extends AppCompatActivity {
                     rollNoInput.setError("Required");
                     return;
                 }
-
-                deptName = deptName.toUpperCase();
-                className = className.toUpperCase();
-                divName = divName.toUpperCase();
 
                 Misc.removeStudentAccount(getApplicationContext(), deptName, className, divName, rollNo);
 

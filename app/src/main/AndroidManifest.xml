@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SIMS">
         <activity
+            android:name=".GetStudentDetails"
+            android:exported="false" />
+        <activity
+            android:name=".DisplayStudentsInfo"
+            android:exported="false" />
+        <activity
             android:name=".ViewDefaulters"
             android:exported="false" />
         <activity

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class ViewDefaulters extends AppCompatActivity {
 
     String deptName, className, divName;
-    Button generatePdfBtn;
+//    Button generatePdfBtn;
     ProgressDialog dialog;
     ArrayList<String> defaultersRollNoList;
     ListView listView;
@@ -35,7 +35,7 @@ public class ViewDefaulters extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_defaulters);
 
-        generatePdfBtn = findViewById(R.id.view_defaulters_generate_pdf_btn);
+//        generatePdfBtn = findViewById(R.id.view_defaulters_generate_pdf_btn);
         listView = findViewById(R.id.view_defaulters_listview);
 
         Intent intent = getIntent();
@@ -48,14 +48,14 @@ public class ViewDefaulters extends AppCompatActivity {
 
         populateList();
 
-        generatePdfBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-
-            }
-        });
+//        generatePdfBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//
+//
+//            }
+//        });
 
     }
 

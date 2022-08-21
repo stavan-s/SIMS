@@ -23,11 +23,6 @@ class Attendance {
     }
 }
 
-class ViewHolderAttendance {
-    TextView lecNameDisplay;
-    TextView statusDisplay;
-}
-
 public class AttendanceAdapter extends BaseAdapter {
 
     Context context;
@@ -56,32 +51,21 @@ public class AttendanceAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        View rowView = view;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.custom_listview_attendance, null);
 
-        ViewHolderAttendance viewHolder = new ViewHolderAttendance();
+        TextView lecNameDisplay = rowView.findViewById(R.id.attendance_listview_lecname);
+        TextView statusDisplay = rowView.findViewById(R.id.attendance_listview_status);
 
-        if(rowView == null) {
-
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.custom_listview_attendance, null);
-
-            viewHolder.lecNameDisplay = rowView.findViewById(R.id.attendance_listview_lecname);
-            viewHolder.statusDisplay = rowView.findViewById(R.id.attendance_listview_status);
-            rowView.setTag(viewHolder);
-        }
-        else {
-            viewHolder = (ViewHolderAttendance) rowView.getTag();
-        }
-
-        viewHolder.lecNameDisplay.setText(attendanceList.get(i).lecName);
+        lecNameDisplay.setText(attendanceList.get(i).lecName);
 
         String status = attendanceList.get(i).status;
-        viewHolder.statusDisplay.setText(status);
+        statusDisplay.setText(status);
 
         if(status.equals("A"))
-            viewHolder.statusDisplay.setTextColor(Color.RED);
+            statusDisplay.setTextColor(Color.RED);
         else
-            viewHolder.statusDisplay.setTextColor(Color.rgb(50,205,50));
+            statusDisplay.setTextColor(Color.rgb(50,205,50));
 
         return rowView;
     }

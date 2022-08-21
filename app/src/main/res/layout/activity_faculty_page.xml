@@ -17,6 +17,7 @@
         android:background="@drawable/ic_wave"/>
 
     <TextView
+        android:id="@+id/faculty_page_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="--- Faculty Panel ---"
@@ -31,117 +32,182 @@
         android:textSize="24sp"
         />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/add_lecture_card"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/card_bg_border"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+    <ScrollView
+        app:layout_constraintTop_toBottomOf="@id/faculty_page_display"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="80dp"
+        android:scrollbarSize="10sp"
+        app:layout_constraintBottom_toTopOf="@id/logoutBtn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="100dp">
 
 
-        <ImageView
-            android:id="@+id/add_lecture_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_baseline_menu_book_24"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="30dp"
-            app:layout_constraintRight_toRightOf="parent"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add\nLecture"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_lecture_icon"
-            />
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:gravity="center_horizontal">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/add_lecture_card"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/card_bg_border"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.15"
+                app:layout_constraintRight_toRightOf="parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/doubts_card"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/card_bg_border"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_lecture_card"
-        android:layout_marginTop="20dp"
-        app:layout_constraintRight_toRightOf="parent">
 
-        <ImageView
-            android:id="@+id/message_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_question_mark_svgrepo_com"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="30dp"
-            app:layout_constraintRight_toRightOf="parent"
-            />
+                <ImageView
+                    android:id="@+id/add_lecture_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_baseline_menu_book_24"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View\nDoubts"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginTop="5dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/message_icon"
-            />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add\nLecture"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/add_lecture_icon"
+                    />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/defaulters_list_card"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/card_bg_border"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/doubts_card"
-        android:layout_marginTop="20dp"
-        app:layout_constraintRight_toRightOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/doubts_card"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/card_bg_border"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/add_lecture_card"
+                android:layout_marginTop="20dp"
+                app:layout_constraintRight_toRightOf="parent">
 
-        <ImageView
-            android:id="@+id/list_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_baseline_defaulters_icon"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="30dp"
-            app:layout_constraintRight_toRightOf="parent"
-            />
+                <ImageView
+                    android:id="@+id/message_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_question_mark_svgrepo_com"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Defaulter's\nList"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginTop="5dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/list_icon"
-            />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View\nDoubts"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/message_icon"
+                    />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/defaulters_list_card"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/card_bg_border"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/doubts_card"
+                android:layout_marginTop="20dp"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <ImageView
+                    android:id="@+id/list_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_baseline_defaulters_icon"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Defaulter's\nList"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/list_icon"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/stud_info_card"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/card_bg_border"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/defaulters_list_card"
+                android:layout_marginTop="20dp"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <ImageView
+                    android:id="@+id/info_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_baseline_info_icon"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Student's\nInfo"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/info_icon"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
 
     <Button
         android:id="@+id/logoutBtn"

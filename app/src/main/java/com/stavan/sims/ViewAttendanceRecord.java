@@ -57,7 +57,6 @@ public class ViewAttendanceRecord extends AppCompatActivity {
         // get student details from intent
         student = (Student) getIntent().getSerializableExtra("Student");
 
-
         // get the date selected by the user
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());

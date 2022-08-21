@@ -48,9 +48,9 @@ public class AddNewStudent extends AppCompatActivity {
                 mName = fullName.nextToken();
                 lName = fullName.nextToken();
 
-                String departmentName = departmentInput.getText().toString().trim();
-                String className = classInput.getText().toString().trim();
-                String divisionName = divisionInput.getText().toString().trim();
+                String departmentName = departmentInput.getText().toString().trim().toUpperCase();
+                String className = classInput.getText().toString().trim().toUpperCase();
+                String divisionName = divisionInput.getText().toString().trim().toUpperCase();
                 String rollNo = rollInput.getText().toString().trim();
                 String ownNumber = ownNumberInput.getText().toString().trim();
                 String parentNumber = parentNumberInput.getText().toString().trim();
@@ -100,9 +100,6 @@ public class AddNewStudent extends AppCompatActivity {
                     return;
                 }
 
-                departmentName = departmentName.toUpperCase();
-                className = className.toUpperCase();
-                divisionName = divisionName.toUpperCase();
 
                 Student student = new Student(email, fName, mName, lName, departmentName, className, divisionName, rollNo, ownNumber, parentNumber, "0");
                 Misc.registerStudentAccount(getApplicationContext(), student);
