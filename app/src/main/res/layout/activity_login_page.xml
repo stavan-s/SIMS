@@ -4,8 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D8E1EA"
+    android:background="#F0F4FA"
     tools:context=".LoginPage">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/back1"
+        app:layout_constraintTop_toBottomOf="@id/login_card"
+        />
+
 
     <RelativeLayout
         app:layout_constraintTop_toTopOf="parent"
@@ -44,6 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/display1" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/login_card"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -52,28 +61,28 @@
         android:background="@drawable/card_bg"
         android:layout_marginTop="200dp">
 
-        <TextView
-            android:id="@+id/account_type_display"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="Account Type : "
-            app:layout_constraintTop_toBottomOf="@id/loginPasswordInput"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="40dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            />
+<!--        <TextView-->
+<!--            android:id="@+id/account_type_display"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:text="Account Type : "-->
+<!--            app:layout_constraintTop_toBottomOf="@id/loginPasswordInput"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            android:layout_marginLeft="40dp"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            />-->
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="120dp"
-            android:layout_height="20dp"
-            app:layout_constraintTop_toBottomOf="@id/loginPasswordInput"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            />
+<!--        <Spinner-->
+<!--            android:id="@+id/spinner"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/loginPasswordInput"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            android:layout_marginRight="20dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            />-->
 
         <Button
             android:id="@+id/loginBtn"
@@ -86,10 +95,10 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/account_type_display"
+            app:layout_constraintTop_toBottomOf="@id/loginPasswordInput"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="23dp"
             />
 
         <EditText
@@ -130,19 +139,6 @@
             android:layout_marginTop="20dp"
             />
 
-<!--        <TextView-->
-<!--            android:id="@+id/forgot"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Forgot Password?"-->
-<!--            android:textColor="#323232"-->
-<!--            android:textSize="14sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.502"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintVertical_bias="0.9" />-->
 
         <ImageView
             android:id="@+id/pass_visible"
@@ -186,10 +182,9 @@
         android:visibility="invisible"
         android:indeterminateDrawable="@drawable/progress_bar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.784" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="30dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,6 +36,7 @@ public class GetStudentDetails extends AppCompatActivity {
         getBtn = findViewById(R.id.get_info_stud_get_btn);
         callingActivity = getIntent().getStringExtra("CallingActivity");
 
+
         getBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,10 +92,12 @@ public class GetStudentDetails extends AppCompatActivity {
                         
                         if(task.isSuccessful() && task.getResult().exists()) {
                             Student student = task.getResult().getValue(Student.class);
+
                             Intent intent = new Intent(getApplicationContext(), DisplayStudentsInfo.class);
                             intent.putExtra("StudentObject", student);
                             intent.putExtra("CallingActivity", callingActivity);
                             startActivity(intent);
+
                         }
                         else if(!task.getResult().exists()) {
                             Toast.makeText(GetStudentDetails.this, "Invalid Details!!", Toast.LENGTH_SHORT).show();

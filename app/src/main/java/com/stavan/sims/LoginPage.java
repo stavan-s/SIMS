@@ -45,7 +45,6 @@ import java.util.StringTokenizer;
 public class LoginPage extends AppCompatActivity {
 
     // Creating references for views
-    TextView forgot;
     Button loginBtn;
     EditText loginEmailInput, loginPasswordInput;
     ProgressBar progressBar;
@@ -59,7 +58,6 @@ public class LoginPage extends AppCompatActivity {
         setContentView(R.layout.activity_login_page);
 
         // Mapping the actual ids to the reference
-//        forgot = findViewById(R.id.forgot);
         loginBtn = findViewById(R.id.loginBtn);
         loginEmailInput = findViewById(R.id.loginEmailInput);
         loginPasswordInput = findViewById(R.id.loginPasswordInput);
@@ -67,13 +65,6 @@ public class LoginPage extends AppCompatActivity {
         passView = findViewById(R.id.pass_visible);
         passView.setBackgroundResource(R.drawable.ic_pass_view);
         fAuth = FirebaseAuth.getInstance();
-
-        // Creating spinner for selecting account type
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.account_types, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
 
 
         // Check if user is already logged in with an account
@@ -95,14 +86,6 @@ public class LoginPage extends AppCompatActivity {
                 }
             });
         }
-    
-//        // navigation to reset password page
-//        forgot.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(LoginPage.this, ResetPass.class));
-//            }
-//        });
 
 
         // hide/view password toggle option
@@ -131,7 +114,7 @@ public class LoginPage extends AppCompatActivity {
                 String pass = loginPasswordInput.getText().toString().trim();
 
 //                email = "admin@gmail.com";
-//                pass = "12345";
+//                pass = "123456";
 
                 if(email.isEmpty()) {
                     loginEmailInput.setError("Email is Required");
@@ -149,11 +132,8 @@ public class LoginPage extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-                            TextView textView = (TextView) spinner.getSelectedView();
-                            String accountType = textView.getText().toString();
-//                            accountType = "Admin";
-                            
-                            validateAccountType(fAuth.getUid(), accountType);
+                            goToPage(fAuth.getUid());
+
                         }
                         else {
                             Toast.makeText(LoginPage.this, task.getException().getLocalizedMessage().toString(), Toast.LENGTH_LONG).show();
@@ -166,48 +146,36 @@ public class LoginPage extends AppCompatActivity {
     }
 
 
-    // function to validate whether the selected account type matches with the actual account type
-    private void validateAccountType(String uid, String accountType) {
+    // function to go to a particular uid's account related page
+    public void goToPage(String uid) {
+
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("account_type")
+                .child(uid)
+                .child("type")
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
 
-        db.child("account_type").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-                    String accType = task.getResult().child("type").getValue().toString();
+                        String accountType = task.getResult().getValue().toString();
 
-                    if (accType.equals(accountType)) {
-                        goToPage(accountType);
-                        finishAffinity();
+                        if (accountType.equals("Admin")) {
+                            startActivity(new Intent(getApplicationContext(), AdminPage.class));
+                            finishAffinity();
+                        }
+
+                        if (accountType.equals("Faculty")) {
+                            startActivity(new Intent(getApplicationContext(), FacultyPage.class));
+                            finishAffinity();
+                        }
+
+                        if (accountType.equals("Student")) {
+                            startActivity(new Intent(getApplicationContext(), UserPage.class));
+                            finishAffinity();
+                        }
+
                     }
-                    else {
-                        Toast.makeText(LoginPage.this, "'Account type' is not valid for this account", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.INVISIBLE);
-                        fAuth.signOut();
-                    }
-                }
-            }
-        });
-    }
-
-
-    // function to go to a particular account related page
-    public void goToPage(String accountType) {
-
-        if (accountType.equals("Admin")) {
-            startActivity(new Intent(getApplicationContext(), AdminPage.class));
-            finishAffinity();
-        }
-
-        if (accountType.equals("Faculty")) {
-            startActivity(new Intent(getApplicationContext(), FacultyPage.class));
-            finishAffinity();
-        }
-
-        if (accountType.equals("Student")) {
-            startActivity(new Intent(getApplicationContext(), UserPage.class));
-            finishAffinity();
-        }
+                });
 
     }
 

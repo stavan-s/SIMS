@@ -139,10 +139,9 @@
                 android:id="@+id/rollDisplay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Roll No. : "
-                android:textSize="20sp"
+                android:text="Roll no. : "
                 android:textColor="@color/black"
-                />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/stud_roll"
@@ -168,7 +167,7 @@
                 android:id="@+id/ownNumberDisplay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Student's No. : "
+                android:text="Student's no. : "
                 android:textSize="20sp"
                 android:textColor="@color/black"
                 />
@@ -197,7 +196,7 @@
                 android:id="@+id/parentNumberDisplay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Parent's No. : "
+                android:text="Parent's no. : "
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -233,13 +232,12 @@
                 android:id="@+id/stud_pass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="abc@123"
                 android:layout_toRightOf="@id/studPassDisplay"
                 android:paddingStart="5dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:text="abc@123"
                 android:textColor="@color/black"
-                />
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
 
         </RelativeLayout>
 
