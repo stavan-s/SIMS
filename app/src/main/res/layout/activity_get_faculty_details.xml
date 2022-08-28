@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GetFacultyDetails"
+    android:background="#D8E1EA">
+
+    <RelativeLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/layout_relative"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@drawable/ic_wave"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter\nFaculty's Details"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/amaranth"
+        android:textStyle="bold"
+        android:textSize="35sp"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/card_bg"
+        android:layout_marginTop="200dp">
+
+
+        <EditText
+            android:id="@+id/get_info_fact_dept_name_input"
+            android:layout_width="260dp"
+            android:layout_height="50dp"
+            android:background="@drawable/input_border"
+            android:ems="10"
+            android:fontFamily="@font/archivo_black"
+            android:hint="Department"
+            android:textSize="16sp"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="30dp" />
+
+        <EditText
+            android:id="@+id/get_info_fact_number_input"
+            android:layout_width="260dp"
+            android:layout_height="50dp"
+            android:background="@drawable/input_border"
+            android:ems="10"
+            android:fontFamily="@font/archivo_black"
+            android:hint="Phone Number"
+            android:textSize="16sp"
+            android:inputType="number"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/get_info_fact_dept_name_input"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="17dp"/>
+
+        <Button
+            android:id="@+id/get_info_fact_get_btn"
+            android:layout_width="260dp"
+            android:layout_height="45dp"
+            android:background="@drawable/button_bg"
+            android:fontFamily="@font/archivo_black"
+            android:text="Get Details"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/get_info_fact_number_input"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_editor_absoluteY="306dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

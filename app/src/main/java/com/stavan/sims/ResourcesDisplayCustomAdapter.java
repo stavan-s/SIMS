@@ -87,66 +87,7 @@ public class ResourcesDisplayCustomAdapter extends BaseAdapter {
             }
         });
 
-        rowView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-
-                deleteFile(i);
-
-
-                return true;
-            }
-        });
-        
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "View PDF Options Here", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         return rowView;
-
-    }
-
-    private void deleteFile(int i) {
-
-        // delete from storage
-        try {
-            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("uploads/" + pdfs.get(i).getRefName() + ".pdf");
-            storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-
-                    // delete details from db
-                    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-                    db.child("resource_uploads")
-                            .child(deptName)
-                            .child(className)
-                            .child(divName)
-                            .child(lectureName)
-                            .child(pdfs.get(i).getRefName())
-                            .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-
-                                    Toast.makeText(context, "File Deleted Successfully", Toast.LENGTH_SHORT).show();
-
-                                }
-                            });
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                }
-            });
-        }
-        catch (Exception e) {
-            Toast.makeText(context, "Error in deleting the file!", Toast.LENGTH_SHORT).show();
-            Toast.makeText(context, e.getLocalizedMessage().toString(), Toast.LENGTH_SHORT).show();
-        }
 
     }
 

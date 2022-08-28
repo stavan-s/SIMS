@@ -4,14 +4,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +57,88 @@ public class ResourcesDisplay extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         populateList();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Intent intent = new Intent(getApplicationContext(), ViewPdf.class);
+                intent.putExtra("pdf_url", files.get(i).getUri());
+                startActivity(intent);
+
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(ResourcesDisplay.this);
+                alert.setMessage("Are you sure to delete record");
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        deleteFile(i);
+
+                        dialog.dismiss();
+
+                    }
+                });
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                }).create().show();
+
+                return true;
+
+            }
+        });
+
+
+    }
+
+    private void deleteFile(int i) {
+
+        try {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("uploads/" + files.get(i).getRefName() + ".pdf");
+            storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+
+                    // delete details from db
+                    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                    db.child("resource_uploads")
+                            .child(deptName)
+                            .child(className)
+                            .child(divName)
+                            .child(lectureName)
+                            .child(files.get(i).getRefName())
+                            .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    Toast.makeText(ResourcesDisplay.this, "File Deleted Successfully", Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        }
+        catch (Exception e) {
+            Toast.makeText(this, e.getLocalizedMessage().toString(), Toast.LENGTH_SHORT).show();
+        }
 
     }
 

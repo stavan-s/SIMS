@@ -37,10 +37,10 @@ public class LectureDetails extends AppCompatActivity {
                 divName = divInput.getText().toString().toUpperCase().trim();
                 lectureName = lectureInput.getText().toString().toUpperCase().trim();
 
-                deptName = "CS";
-                className = "TYCS";
-                divName = "B";
-                lectureName = "LINUX";
+//                deptName = "CS";
+//                className = "TYCS";
+//                divName = "B";
+//                lectureName = "LINUX";
 
                 if(deptName.isEmpty()) {
                     deptInput.setError("Required");

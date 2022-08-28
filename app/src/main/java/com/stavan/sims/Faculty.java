@@ -1,6 +1,8 @@
 package com.stavan.sims;
 
-public class Faculty {
+import java.io.Serializable;
+
+public class Faculty implements Serializable {
 
     private String fName;
     private String mName;
@@ -18,6 +20,8 @@ public class Faculty {
         this.email = email;
         this.number = number;
     }
+
+    public Faculty() { }
 
     public String getfName() {
         return fName;
