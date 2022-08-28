@@ -95,16 +95,16 @@ public class AddLecture extends AppCompatActivity {
     // function to add the lecture's entry in the db, and navigate to AttendancePage
     private void addLecture(String deptName, String className, String divName, String lectureName, String date) {
 
-        increaseLecCount(deptName, className, divName);
+        increaseLecCount(deptName, className, divName, lectureName);
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
-        db.child("attendance_info")
+        db.child("lecture_info")
                 .child(deptName)
                 .child(className)
                 .child(divName)
-                .child(date)
                 .child(lectureName)
+                .child(date)
                 .child("absentees")
                 .setValue("null").addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -127,20 +127,21 @@ public class AddLecture extends AppCompatActivity {
     }
 
 
-    private void increaseLecCount(String deptName, String className, String divName) {
+    private void increaseLecCount(String deptName, String className, String divName, String lecName) {
 
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("attendance_info").child(deptName).child(className).child(divName);
-        db.child("lec_count")
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("lecture_info").child(deptName).child(className).child(divName);
+        db.child(lecName)
                 .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         if(task.isSuccessful() && task.getResult().exists()) {
-                            String count = task.getResult().getValue().toString();
+                            String count = task.getResult().child("lec_count").getValue().toString();
                             if(count.equals("null"))
                                 count = "0";
                             int c = Integer.parseInt(count);
                             
-                            db.child("lec_count")
+                            db.child(lecName)
+                                    .child("lec_count")
                                     .setValue(String.valueOf(c+1)).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -152,7 +153,8 @@ public class AddLecture extends AppCompatActivity {
                             
                         }
                         else if(!task.getResult().exists()) {
-                            db.child("lec_count")
+                            db.child(lecName)
+                                    .child("lec_count")
                                     .setValue("1").addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

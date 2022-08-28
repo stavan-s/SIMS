@@ -53,7 +53,7 @@ public class DoubtsPage extends AppCompatActivity {
     private void populateDoubtsList(CustomBaseAdapterDoubtPage arrayAdapter) {
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("lecture_doubts")
+        db.child("lecture_info")
                 .child(deptName)
                 .child(className)
                 .child(divName)
@@ -65,7 +65,7 @@ public class DoubtsPage extends AppCompatActivity {
 
                         doubts.clear();
 
-                        if(snapshot.getChildrenCount() == 0) {
+                        if(snapshot.getChildrenCount() == 1) {
                             Toast.makeText(DoubtsPage.this, "No doubts posted for this lecture!", Toast.LENGTH_LONG).show();
                             onBackPressed();
                             return;
@@ -73,6 +73,11 @@ public class DoubtsPage extends AppCompatActivity {
 
                         for(DataSnapshot snapshot1 : snapshot.getChildren()) {
                             String doubt = snapshot1.getKey().toString();
+
+                            if(doubt.equals("absentees")) {
+                                continue;
+                            }
+
                             String name = snapshot1.child("name").getValue().toString();
                             String cleared = snapshot1.child("cleared").getValue().toString();
                             boolean clearedValue;

@@ -109,36 +109,43 @@ public class ViewAttendanceRecord extends AppCompatActivity {
     // function used to fetch the attendance from db
     private void getAttendance(String clickedDate, List<Attendance> attendanceRecords) {
 
+        attendanceRecords.add(new Attendance("Fetching Records...", ""));
+        arrayAdapter.notifyDataSetChanged();
+
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("attendance_info")
+        db.child("lecture_info")
                 .child(student.getDepartment())
                 .child(student.getClassName())
                 .child(student.getDiv())
-                .child(clickedDate)
                 .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
 
                         clearList();
 
-                        if(task.getResult().getChildrenCount() == 0) {
+                        for(DataSnapshot lecture : task.getResult().getChildren()) {
+
+                            if(lecture.child(clickedDate).exists()) {
+                                String lecName = lecture.getKey().toString();
+                                String status;
+                                String absenteesStr = lecture.child(clickedDate).child("absentees").getValue().toString();
+                                if(absenteesStr.contains(student.getRollNo()))
+                                    status = "A";
+                                else
+                                    status = "P";
+
+                                Attendance attendance = new Attendance(lecName, status);
+                                attendanceRecords.add(attendance);
+                            }
+
+                        }
+
+                        if(attendanceRecords.size() == 0) {
                             attendanceRecords.add(new Attendance("No lecture for this day!", ""));
-                            return;
                         }
 
-                        for (DataSnapshot snapshot1 : task.getResult().getChildren()) {
-                            String lecName = snapshot1.getKey().toString();
-                            String status;
-                            String absenteesStr = snapshot1.child("absentees").getValue().toString();
-                            if(absenteesStr.contains(student.getRollNo()))
-                                status = "A";
-                            else
-                                status = "P";
-
-                            Attendance attendance = new Attendance(lecName, status);
-                            attendanceRecords.add(attendance);
-                        }
                         arrayAdapter.notifyDataSetChanged();
+
                     }
                 });
 

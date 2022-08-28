@@ -17,10 +17,9 @@ public class Student implements Serializable {
     private String ownNumber;
     private String parentNumber;
     private String initialPass;
-    private String absentCount;
     private String UID;
 
-    public Student(String id, String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber, String absentCount) {
+    public Student(String id, String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber) {
         this.id = id;
         this.fName = fName;
         this.mName = mName;
@@ -31,7 +30,6 @@ public class Student implements Serializable {
         this.rollNo = rollNo;
         this.ownNumber = ownNumber;
         this.parentNumber = parentNumber;
-        this.absentCount = absentCount;
     }
 
     public Student() {}
@@ -130,13 +128,5 @@ public class Student implements Serializable {
 
     public void setUID(String UID) {
         this.UID = UID;
-    }
-
-    public String getAbsentCount() {
-        return absentCount;
-    }
-
-    public void setAbsentCount(String absentCount) {
-        this.absentCount = absentCount;
     }
 }

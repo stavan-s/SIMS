@@ -46,10 +46,10 @@ public class GetStudentDetails extends AppCompatActivity {
                 String divName = studDiv.getText().toString().trim().toUpperCase();
                 String rollNo = studRoll.getText().toString().trim().toUpperCase();
 
-//                deptName = "CS";
-//                className = "TYCS";
-//                divName = "B";
-//                rollNo = "5142";
+                deptName = "CS";
+                className = "TYCS";
+                divName = "B";
+                rollNo = "5146";
 
                 if(deptName.isEmpty()) {
                     studDept.setError("Required!");

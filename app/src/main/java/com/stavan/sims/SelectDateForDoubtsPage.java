@@ -125,29 +125,32 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
     private void getLectures(String formattedDate, List<String> lecsList) {
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("attendance_info")
+        db.child("lecture_info")
                 .child(deptName)
                 .child(className)
                 .child(divName)
-                .child(formattedDate)
                 .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
 
                         if(task.isSuccessful()) {
-                            clearList();
 
-                            if(task.getResult().getChildrenCount() == 0) {
-                                lecsList.add("No lecture for this day!");
-                                return;
+                            for(DataSnapshot lecture : task.getResult().getChildren()) {
+
+                                if(lecture.child(formattedDate).exists()) {
+                                    lecsList.add(lecture.getKey().toString());
+                                }
+
                             }
 
-                            for(DataSnapshot snapshot : task.getResult().getChildren()) {
-                                lecsList.add(snapshot.getKey().toString());
+                            if(lecsList.size() == 0) {
+                                lecsList.add("No lecture for this day!");
                             }
 
                             arrayAdapter.notifyDataSetChanged();
+
                         }
+
                     }
                 });
 

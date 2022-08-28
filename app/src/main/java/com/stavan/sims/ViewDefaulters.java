@@ -25,17 +25,16 @@ import java.util.ArrayList;
 public class ViewDefaulters extends AppCompatActivity {
 
     String deptName, className, divName;
-//    Button generatePdfBtn;
     ProgressDialog dialog;
     ArrayList<String> defaultersRollNoList;
     ListView listView;
+    int lecCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_defaulters);
 
-//        generatePdfBtn = findViewById(R.id.view_defaulters_generate_pdf_btn);
         listView = findViewById(R.id.view_defaulters_listview);
 
         Intent intent = getIntent();
@@ -48,30 +47,26 @@ public class ViewDefaulters extends AppCompatActivity {
 
         populateList();
 
-//        generatePdfBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//
-//
-//            }
-//        });
-
     }
 
     private void populateList() {
 
         defaultersRollNoList = new ArrayList<>();
 
-        DatabaseReference dbAttendanceInfo = FirebaseDatabase.getInstance().getReference().child("attendance_info").child(deptName).child(className).child(divName);
+        DatabaseReference dbAttendanceInfo = FirebaseDatabase.getInstance().getReference().child("lecture_info").child(deptName).child(className).child(divName);
         DatabaseReference dbStudentInfo = FirebaseDatabase.getInstance().getReference().child("student_info").child(deptName).child(className).child(divName);
 
-        dbAttendanceInfo.child("lec_count").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        dbAttendanceInfo.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if(task.isSuccessful() && task.getResult().exists()) {
-                    String lecCount = task.getResult().getValue().toString();
+                for(DataSnapshot lecture : snapshot.getChildren()) {
+
+                    String dbLecCount = lecture.child("lec_count").getValue().toString();
+                    lecCount += Integer.parseInt(dbLecCount);
+
+                }
+
 
                     dbStudentInfo.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -79,21 +74,31 @@ public class ViewDefaulters extends AppCompatActivity {
 
                             defaultersRollNoList.clear();
 
-                            for(DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                String rollNo = snapshot1.getKey().toString();
-                                String absentCount = snapshot1.child("absentCount").getValue().toString();
-                                int presentCount = Integer.parseInt(lecCount)-Integer.parseInt(absentCount);
-                                int attendancePercent = (int) Math.ceil( ( (double) presentCount / Integer.parseInt(lecCount) ) *100 );
+                            for(DataSnapshot rollNo : snapshot.getChildren()) {
+
+                                String roll = rollNo.getKey().toString();
+
+                                int absentCount = 0;
+
+                                for(DataSnapshot lecAbsentees : rollNo.child("lec_absentees").getChildren()) {
+
+                                    absentCount += Integer.parseInt(lecAbsentees.getValue().toString());
+
+                                }
+
+                                int presentCount = Integer.parseInt(String.valueOf(lecCount))-Integer.parseInt(String.valueOf(absentCount));
+                                int attendancePercent = (int) Math.ceil( ( (double) presentCount / Integer.parseInt(String.valueOf(lecCount)) ) *100 );
 
                                 if(attendancePercent < 75) {
-                                    String name = snapshot1.child("fName").getValue().toString() + " " + snapshot1.child("lName").getValue().toString();
-                                    defaultersRollNoList.add(rollNo + " - " + name + " (" + attendancePercent + "%)");
+                                    String name = rollNo.child("fName").getValue().toString() + " " + rollNo.child("lName").getValue().toString();
+                                    defaultersRollNoList.add(roll + " - " + name + " (" + attendancePercent + "%)");
                                 }
+
 
                             }
 
-                            dialog.dismiss();
                             displayList();
+                            dialog.dismiss();
 
                         }
 
@@ -102,11 +107,11 @@ public class ViewDefaulters extends AppCompatActivity {
 
                         }
                     });
-                }
-                else if(!task.getResult().exists()) {
-                    Toast.makeText(ViewDefaulters.this, "Invalid details were provided", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
-                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

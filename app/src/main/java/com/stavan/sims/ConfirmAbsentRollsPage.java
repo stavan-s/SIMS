@@ -65,12 +65,12 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
                 }
 
                 DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-                db.child("attendance_info")
+                db.child("lecture_info")
                         .child(deptName)
                         .child(className)
                         .child(divName)
-                        .child(Misc.getDate())
                         .child(lectureName)
+                        .child(Misc.getDate())
                         .child("absentees")
                         .setValue(absentRollNosString).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -100,13 +100,23 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("student_info").child(deptName).child(className).child(divName);
         for(int i = 0; i<absentRollNosList.size(); i++) {
             String rollNo = absentRollNosList.get(i);
-            db.child(rollNo).child("absentCount").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            db.child(rollNo).child("lec_absentees").child(lectureName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                     if(task.isSuccessful() && task.getResult().exists()) {
                         String count = task.getResult().getValue().toString();
                         int c = Integer.parseInt(count);
-                        db.child(rollNo).child("absentCount").setValue(String.valueOf(c+1)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        db.child(rollNo).child("lec_absentees").child(lectureName).setValue(String.valueOf(c+1)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(!task.isSuccessful()) {
+                                    Toast.makeText(ConfirmAbsentRollsPage.this, "Error Occurred", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        db.child(rollNo).child("lec_absentees").child(lectureName).setValue("1").addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(!task.isSuccessful()) {

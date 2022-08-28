@@ -69,10 +69,31 @@ public class DoubtPageStudents extends AppCompatActivity {
                     return;
                 }
 
+                if(doubt.equals("absentees")) {
+                    doubtInput.setText("");
+                    return;
+                }
+                
+                if(checkDoubtExists(doubt)) {
+                    doubtInput.setText("");
+                    Toast.makeText(DoubtPageStudents.this, "Same doubt is already posted by another student!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 postDoubt(doubt);
             }
         });
 
+    }
+
+    private boolean checkDoubtExists(String doubt) {
+
+        for(Doubt dbDoubt : doubtsList) {
+            if(dbDoubt.doubt.equals(doubt)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void postDoubt(String doubt) {
@@ -80,7 +101,7 @@ public class DoubtPageStudents extends AppCompatActivity {
         doubtInput.setText("");
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference()
-                .child("lecture_doubts")
+                .child("lecture_info")
                 .child(deptName)
                 .child(className)
                 .child(divName)
@@ -107,7 +128,7 @@ public class DoubtPageStudents extends AppCompatActivity {
     public void fetchData() {
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("lecture_doubts")
+        db.child("lecture_info")
                 .child(deptName)
                 .child(className)
                 .child(divName)
@@ -119,12 +140,16 @@ public class DoubtPageStudents extends AppCompatActivity {
 
                         clearList();
 
-                        if(snapshot.getChildrenCount() == 0) {
+                        if(snapshot.getChildrenCount() == 1) {
                             return;
                         }
 
                         for(DataSnapshot snapshot1 : snapshot.getChildren()) {
                             String doubt = snapshot1.getKey().toString();
+
+                            if(doubt.equals("absentees"))
+                                continue;
+
                             String name = snapshot1.child("name").getValue().toString();
                             String cleared = snapshot1.child("cleared").getValue().toString();
                             boolean clearedValue;

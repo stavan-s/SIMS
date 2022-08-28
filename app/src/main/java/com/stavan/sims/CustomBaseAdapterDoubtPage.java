@@ -100,7 +100,7 @@ public class CustomBaseAdapterDoubtPage extends BaseAdapter {
 
                 // db code to make doubt cleared goes below
                 DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-                db.child("lecture_doubts")
+                db.child("lecture_info")
                         .child(deptName)
                         .child(className)
                         .child(divName)
