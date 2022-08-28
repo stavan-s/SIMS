@@ -30,7 +30,7 @@ import java.util.StringTokenizer;
 
 public class UserPage extends AppCompatActivity {
 
-    ConstraintLayout attendanceCard, doubtsCard;
+    ConstraintLayout attendanceCard, doubtsCard, viewResourcesCard;
     Button logoutBtn;
     FirebaseAuth fAuth;
     Student student;
@@ -42,6 +42,7 @@ public class UserPage extends AppCompatActivity {
 
         attendanceCard = findViewById(R.id.student_page_attendance_card);
         doubtsCard = findViewById(R.id.student_page_doubts_card);
+        viewResourcesCard = findViewById(R.id.view_resources_card);
         logoutBtn = findViewById(R.id.logoutBtn);
         fAuth = FirebaseAuth.getInstance();
 
@@ -81,6 +82,16 @@ public class UserPage extends AppCompatActivity {
                 intent.putExtra("DivName", student.getDiv());
                 intent.putExtra("NavigateTo", "DoubtPageStudents");
                 startActivity(intent);
+            }
+        });
+
+
+        viewResourcesCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
             }
         });
 

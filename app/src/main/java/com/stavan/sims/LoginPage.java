@@ -74,17 +74,7 @@ public class LoginPage extends AppCompatActivity {
                     "Loading. Please wait...", true);
 
 
-            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-            db.child("account_type").child(fAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if(task.isSuccessful()) {
-                        String accType = task.getResult().child("type").getValue().toString();
-                        goToPage(accType);
-                        finishAffinity();
-                    }
-                }
-            });
+            goToPage(fAuth.getUid());
         }
 
 

@@ -135,8 +135,6 @@ public class ViewAttendanceRecord extends AppCompatActivity {
                             else
                                 status = "P";
 
-//                            Toast.makeText(ViewAttendanceRecord.this, lecName + " " + status, Toast.LENGTH_SHORT).show();
-
                             Attendance attendance = new Attendance(lecName, status);
                             attendanceRecords.add(attendance);
                         }
