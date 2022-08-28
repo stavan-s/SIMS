@@ -73,6 +73,9 @@ public class ResourcesDisplay extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                if(callingActivity.equals("StudentDashboard"))
+                    return true;
+
                 AlertDialog.Builder alert = new AlertDialog.Builder(ResourcesDisplay.this);
                 alert.setMessage("Are you sure to delete record");
                 alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {

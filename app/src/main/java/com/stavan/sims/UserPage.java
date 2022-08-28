@@ -4,13 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +39,8 @@ public class UserPage extends AppCompatActivity {
     Button logoutBtn;
     FirebaseAuth fAuth;
     Student student;
+    ArrayList<String> lecNames = new ArrayList<>();
+    ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +97,70 @@ public class UserPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                adapter = new ArrayAdapter(UserPage.this, android.R.layout.simple_list_item_1, lecNames);
 
+                populateList();
+
+                ListView listView = new ListView(UserPage.this);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserPage.this);
+                builder.setCancelable(true);
+                builder.setView(listView);
+
+                final AlertDialog dialog = builder.create();
+
+                Window window = dialog.getWindow();
+                window.setGravity(Gravity.CENTER);
+
+                dialog.show();
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                        Intent intent = new Intent(getApplicationContext(), ResourcesDisplay.class);
+                        intent.putExtra("DeptName", student.getDepartment());
+                        intent.putExtra("ClassName", student.getClassName());
+                        intent.putExtra("DivName", student.getDiv());
+                        intent.putExtra("LectName", lecNames.get(i));
+                        intent.putExtra("CallingActivity", "StudentDashboard");
+                        startActivity(intent);
+
+                    }
+                });
 
             }
         });
+
+    }
+
+    private void populateList() {
+
+        lecNames.clear();
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("lecture_info")
+                .child(student.getDepartment())
+                .child(student.getClassName())
+                .child(student.getDiv())
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                        if(task.isSuccessful() && task.getResult().exists()) {
+
+                            for(DataSnapshot lecture : task.getResult().getChildren()) {
+                                lecNames.add(lecture.getKey().toString());
+                            }
+
+                            adapter.notifyDataSetChanged();
+
+                        }
+
+                    }
+                });
 
     }
 
