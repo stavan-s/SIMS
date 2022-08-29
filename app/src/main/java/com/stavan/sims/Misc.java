@@ -23,9 +23,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -529,4 +531,28 @@ public class Misc {
         return formattedDate;
     }
 
+    public static boolean lateAdmission(String d1, String d2) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            Date dateOfJoining = sdf.parse(d1);
+            Date clickedDate = sdf.parse(d2);
+
+            int val = dateOfJoining.compareTo(clickedDate);
+
+            if(val > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 }

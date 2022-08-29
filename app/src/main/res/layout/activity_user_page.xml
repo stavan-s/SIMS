@@ -7,16 +7,6 @@
     tools:context=".AdminPage"
     android:background="#D8E1EA">
 
-<!--    <ImageView-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/logoutBtn"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="200dp"-->
-<!--        android:src="@drawable/stud1"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        />-->
-
     <RelativeLayout
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"

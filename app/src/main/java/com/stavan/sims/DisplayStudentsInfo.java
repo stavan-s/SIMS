@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -78,7 +79,7 @@ public class DisplayStudentsInfo extends AppCompatActivity {
 
         populateList();
 
-        adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, attendanceSummary);
+        adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1 , attendanceSummary);
         listView.setAdapter(adapter);
     }
 
@@ -141,7 +142,11 @@ public class DisplayStudentsInfo extends AppCompatActivity {
                                             int studLecCount = studentLecCount.get(i);
                                             int allLecCount = totalLecCount.get(i);
 
-                                            String entry = lecName + " : " + (allLecCount - studLecCount) + "/" + allLecCount;
+//                                            String entry = Html.fromHtml("font color=#ff0000>" + lecName + "</font>" ) + " : " + (allLecCount - studLecCount) + "/" + allLecCount;
+//                                            String absentCount = "<font color=" + "#ff0000" + ">" + studLecCount + "</font>";
+//                                            String presentCount = "<font color=" + "#32CD32" + ">" + (allLecCount-studLecCount) + "</font>";
+//                                            String entry = lecName + " : (P) " + presentCount + "/" + allLecCount + "  ,  (A) " + absentCount + "/" + allLecCount;
+                                            String entry = lecName + " : " + (allLecCount-studLecCount) + "/" + allLecCount;
 
                                             attendanceSummary.add(entry);
 

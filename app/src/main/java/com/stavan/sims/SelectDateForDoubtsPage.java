@@ -32,7 +32,7 @@ import java.util.List;
 public class SelectDateForDoubtsPage extends AppCompatActivity {
 
     DatePicker datePicker;
-    String deptName, className, divName, lectName;
+    String deptName, className, divName, doj;
     List<String> lecsList = new ArrayList<>();
     ArrayAdapter arrayAdapter;
 
@@ -45,6 +45,7 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
         deptName = intent.getStringExtra("DeptName").toUpperCase();
         className = intent.getStringExtra("ClassName").toUpperCase();
         divName = intent.getStringExtra("DivName").toUpperCase();
+        doj = intent.getStringExtra("DOJ");
 
         checkDetailsExists();
 
@@ -123,6 +124,13 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
 
     // function used to display the lecture names of the provided date
     private void getLectures(String formattedDate, List<String> lecsList) {
+
+        if(Misc.lateAdmission(doj, formattedDate)) {
+            lecsList.clear();
+            lecsList.add("No lecture for this day!");
+            arrayAdapter.notifyDataSetChanged();
+            return;
+        }
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         db.child("lecture_info")

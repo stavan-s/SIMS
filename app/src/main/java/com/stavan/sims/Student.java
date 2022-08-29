@@ -17,9 +17,10 @@ public class Student implements Serializable {
     private String ownNumber;
     private String parentNumber;
     private String initialPass;
+    private String dateOfJoining;
     private String UID;
 
-    public Student(String id, String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber) {
+    public Student(String id, String fName, String mName, String lName, String department, String className, String div, String rollNo, String ownNumber, String parentNumber, String dateOfJoining) {
         this.id = id;
         this.fName = fName;
         this.mName = mName;
@@ -30,6 +31,7 @@ public class Student implements Serializable {
         this.rollNo = rollNo;
         this.ownNumber = ownNumber;
         this.parentNumber = parentNumber;
+        this.dateOfJoining = dateOfJoining;
     }
 
     public Student() {}
@@ -120,6 +122,14 @@ public class Student implements Serializable {
 
     public void setInitialPass(String initialPass) {
         this.initialPass = initialPass;
+    }
+
+    public String getDateOfJoining() {
+        return dateOfJoining;
+    }
+
+    public void setDateOfJoining(String dateOfJoining) {
+        this.dateOfJoining = dateOfJoining;
     }
 
     public String getUID() {

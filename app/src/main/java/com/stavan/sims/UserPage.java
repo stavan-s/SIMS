@@ -87,6 +87,7 @@ public class UserPage extends AppCompatActivity {
                 intent.putExtra("DeptName", student.getDepartment());
                 intent.putExtra("ClassName", student.getClassName());
                 intent.putExtra("DivName", student.getDiv());
+                intent.putExtra("DOJ", student.getDateOfJoining());
                 intent.putExtra("NavigateTo", "DoubtPageStudents");
                 startActivity(intent);
             }

@@ -112,6 +112,13 @@ public class ViewAttendanceRecord extends AppCompatActivity {
         attendanceRecords.add(new Attendance("Fetching Records...", ""));
         arrayAdapter.notifyDataSetChanged();
 
+        if(Misc.lateAdmission(student.getDateOfJoining(), clickedDate)) {
+            attendanceRecords.clear();
+            attendanceRecords.add(new Attendance("No lecture for this day!", ""));
+            arrayAdapter.notifyDataSetChanged();
+            return;
+        }
+
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         db.child("lecture_info")
                 .child(student.getDepartment())

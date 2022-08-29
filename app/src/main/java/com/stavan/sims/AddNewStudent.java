@@ -100,7 +100,7 @@ public class AddNewStudent extends AppCompatActivity {
                     return;
                 }
 
-                Student student = new Student(email, fName, mName, lName, departmentName, className, divisionName, rollNo, ownNumber, parentNumber);
+                Student student = new Student(email, fName, mName, lName, departmentName, className, divisionName, rollNo, ownNumber, parentNumber, Misc.getDate());
                 Misc.registerStudentAccount(getApplicationContext(), student);
 
                 startActivity(new Intent(getApplicationContext(), AdminPage.class));
