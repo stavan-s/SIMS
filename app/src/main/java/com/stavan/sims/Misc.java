@@ -101,9 +101,7 @@ public class Misc {
 
                     fAuth.signOut();
 
-//                    sendCredentialsToStudent(student.getfName(), email, password, student.getOwnNumber(), student.getParentNumber());
-
-//                    clearAddStudentPageTextFields();
+                    sendLoginCredentials(student.getfName(), email, password, new String[] {student.getOwnNumber(), student.getParentNumber()});
                 }
                 else {
                     Toast.makeText(context, task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -325,9 +323,7 @@ public class Misc {
 
                     fAuth.signOut();
 
-//                    sendCredentialsToFaculty(faculty.getfName(), email, password, faculty.getNumber());
-
-//                    clearAddFacultyPageTextFields();
+                    sendLoginCredentials(faculty.getfName(), email, password, new String[] {faculty.getNumber()});
                 }
                 else {
                     Toast.makeText(context, task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -337,30 +333,9 @@ public class Misc {
         });
     }
 
-    private static void clearAddFacultyPageTextFields() {
-        AddNewFaculty obj = new AddNewFaculty();
-        obj.nameInput.setText("");
-        obj.emailInput.setText("");
-        obj.numberInput.setText("");
-        obj.nameInput.requestFocus();
-    }
-
-    private static void clearAddStudentPageTextFields() {
-        AddNewStudent obj = new AddNewStudent();
-        obj.nameInput.setText("");
-        obj.emailInput.setText("");
-        obj.departmentInput.setText("");
-        obj.classInput.setText("");
-        obj.divisionInput.setText("");
-        obj.rollInput.setText("");
-        obj.ownNumberInput.setText("");
-        obj.parentNumberInput.setText("");
-        obj.nameInput.requestFocus();
-    }
-
 
     // function used to send the credentials of an account after account registration
-    private static void sendCredentialsToStudent(String name, String id, String password, String ownNumber, String parentNumber) {
+    private static void sendLoginCredentials(String name, String id, String password, String[] number) {
 
         String message = "Credentials for your SIMS app login :\n"
                         + "Name : " + name + "\n"
@@ -368,21 +343,10 @@ public class Misc {
                         + "Password : " + password;
 
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(ownNumber, null, message, null, null);
-        smsManager.sendTextMessage(parentNumber, null, message, null, null);
 
-        Log.d("SMS", "SMS Sent");
-    }
-
-    private static void sendCredentialsToFaculty(String name, String id, String password, String number) {
-
-        String message = "Credentials for your SIMS app login :\n"
-                + "Name : " + name + "\n"
-                + "Email id : " + id + "\n"
-                + "Password : " + password;
-
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(number, null, message, null, null);
+        for(String no : number) {
+            smsManager.sendTextMessage(no, null, message, null, null);
+        }
 
         Log.d("SMS", "SMS Sent");
     }

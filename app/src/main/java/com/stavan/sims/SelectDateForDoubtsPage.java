@@ -72,7 +72,7 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
         clearList();
 
         ListView listView = new ListView(this);
-        getLectures(formattedDate, lecsList);
+        getLectures(formattedDate, lecsList, getIntent().getStringExtra("NavigateTo"));
 
         listView.setAdapter(arrayAdapter);
 
@@ -123,13 +123,15 @@ public class SelectDateForDoubtsPage extends AppCompatActivity {
 
 
     // function used to display the lecture names of the provided date
-    private void getLectures(String formattedDate, List<String> lecsList) {
+    private void getLectures(String formattedDate, List<String> lecsList, String callingActivity) {
 
-        if(Misc.lateAdmission(doj, formattedDate)) {
-            lecsList.clear();
-            lecsList.add("No lecture for this day!");
-            arrayAdapter.notifyDataSetChanged();
-            return;
+        if(!callingActivity.equals("DoubtsPage")) {
+            if (Misc.lateAdmission(doj, formattedDate)) {
+                lecsList.clear();
+                lecsList.add("No lecture for this day!");
+                arrayAdapter.notifyDataSetChanged();
+                return;
+            }
         }
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();

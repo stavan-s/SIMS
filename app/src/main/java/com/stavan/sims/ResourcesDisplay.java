@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,12 +39,19 @@ public class ResourcesDisplay extends AppCompatActivity {
     String deptName, className, divName, lectureName;
     String callingActivity;
 
+    ImageView image;
+    TextView errorText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resources_display);
 
         listView = findViewById(R.id.resources_display_listview);
+        image = findViewById(R.id.resources_image);
+        errorText = findViewById(R.id.image_text);
+        image.setVisibility(View.INVISIBLE);
+        errorText.setVisibility(View.INVISIBLE);
 
         deptName = getIntent().getStringExtra("DeptName");
         className = getIntent().getStringExtra("ClassName");
@@ -175,6 +184,11 @@ public class ResourcesDisplay extends AppCompatActivity {
 
                             files.add(file);
 
+                        }
+
+                        if(files.isEmpty()) {
+                            image.setVisibility(View.VISIBLE);
+                            errorText.setVisibility(View.VISIBLE);
                         }
 
                         Collections.reverse(files);

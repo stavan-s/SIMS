@@ -7,8 +7,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.DeadObjectException;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +27,8 @@ public class DoubtsPage extends AppCompatActivity {
     ListView listView;
     ArrayList<Doubt> doubts;
     String deptName, className, divName, lectName, date;
+    ImageView image;
+    TextView errorText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,10 @@ public class DoubtsPage extends AppCompatActivity {
         date = intent.getStringExtra("Date");
 
         listView = findViewById(R.id.doubts_page_listview);
+        image = findViewById(R.id.doubts_image);
+        errorText = findViewById(R.id.doubts_image_text);
+        image.setVisibility(View.INVISIBLE);
+        errorText.setVisibility(View.INVISIBLE);
 
         doubts = new ArrayList<>();
         CustomBaseAdapterDoubtPage arrayAdapter = new CustomBaseAdapterDoubtPage(this, doubts, deptName, className, divName, lectName, date);
@@ -66,9 +75,13 @@ public class DoubtsPage extends AppCompatActivity {
                         doubts.clear();
 
                         if(snapshot.getChildrenCount() == 1) {
-                            Toast.makeText(DoubtsPage.this, "No doubts posted for this lecture!", Toast.LENGTH_LONG).show();
-                            onBackPressed();
+                            image.setVisibility(View.VISIBLE);
+                            errorText.setVisibility(View.VISIBLE);
                             return;
+                        }
+                        else {
+                            image.setVisibility(View.GONE);
+                            errorText.setVisibility(View.GONE);
                         }
 
                         for(DataSnapshot snapshot1 : snapshot.getChildren()) {

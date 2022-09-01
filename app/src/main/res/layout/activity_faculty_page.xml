@@ -52,159 +52,178 @@
             android:padding="8dp"
             android:gravity="center_horizontal">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/add_lecture_card"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:background="@drawable/card_bg_border"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.15"
-                app:layout_constraintRight_toRightOf="parent">
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
 
-                <ImageView
-                    android:id="@+id/add_lecture_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_baseline_menu_book_24"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/add_lecture_card"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:background="@drawable/card_bg_border"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="30dp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintVertical_bias="0.15"
+                    app:layout_constraintRight_toRightOf="parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add\nLecture"
-                    android:textAlignment="center"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
+
+                    <ImageView
+                        android:id="@+id/add_lecture_icon"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_baseline_menu_book_24"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="30dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add\nLecture"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/add_lecture_icon"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/doubts_card"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:background="@drawable/card_bg_border"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/add_lecture_icon"
-                    />
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/add_lecture_card"
+                    app:layout_constraintRight_toRightOf="parent">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/message_icon"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_question_mark_svgrepo_com"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="30dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/doubts_card"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:background="@drawable/card_bg_border"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/add_lecture_card"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="View\nDoubts"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/message_icon"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="20dp"
-                app:layout_constraintRight_toRightOf="parent">
+                >
 
-                <ImageView
-                    android:id="@+id/message_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_question_mark_svgrepo_com"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/upload_resources_card"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:background="@drawable/card_bg_border"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="30dp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/defaulters_list_card"
+                    app:layout_constraintRight_toRightOf="parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="View\nDoubts"
-                    android:textAlignment="center"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="5dp"
+                    <ImageView
+                        android:id="@+id/resources_icon"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_baseline_edit_note_24"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="30dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Manage\nResources"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/resources_icon"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/defaulters_list_card"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:background="@drawable/card_bg_border"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/message_icon"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/doubts_card"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintRight_toRightOf="parent">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/list_icon"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_baseline_defaulters_icon"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="30dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/upload_resources_card"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:background="@drawable/card_bg_border"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/defaulters_list_card"
-                android:layout_marginTop="20dp"
-                app:layout_constraintRight_toRightOf="parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Defaulter's\nList"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/list_icon"
+                        />
 
-                <ImageView
-                    android:id="@+id/resources_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_baseline_edit_note_24"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="30dp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Manage\nResources"
-                    android:textAlignment="center"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/resources_icon"
-                    />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/defaulters_list_card"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:background="@drawable/card_bg_border"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/doubts_card"
-                android:layout_marginTop="20dp"
-                app:layout_constraintRight_toRightOf="parent">
-
-                <ImageView
-                    android:id="@+id/list_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_baseline_defaulters_icon"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="30dp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Defaulter's\nList"
-                    android:textAlignment="center"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="5dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/list_icon"
-                    />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/stud_info_card"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
                 android:background="@drawable/card_bg_border"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/defaulters_list_card"
@@ -213,8 +232,8 @@
 
                 <ImageView
                     android:id="@+id/info_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:src="@drawable/ic_baseline_info_icon"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -227,7 +246,7 @@
                     android:layout_height="wrap_content"
                     android:text="Student's\nInfo"
                     android:textAlignment="center"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:layout_marginTop="5dp"

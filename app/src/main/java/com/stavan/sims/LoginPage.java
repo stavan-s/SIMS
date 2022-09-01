@@ -47,7 +47,6 @@ public class LoginPage extends AppCompatActivity {
     // Creating references for views
     Button loginBtn;
     EditText loginEmailInput, loginPasswordInput;
-    ProgressBar progressBar;
     ImageView passView;
     int passToggle = 0;
     FirebaseAuth fAuth;
@@ -61,7 +60,6 @@ public class LoginPage extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         loginEmailInput = findViewById(R.id.loginEmailInput);
         loginPasswordInput = findViewById(R.id.loginPasswordInput);
-        progressBar = findViewById(R.id.progressBar2);
         passView = findViewById(R.id.pass_visible);
         passView.setBackgroundResource(R.drawable.ic_pass_view);
         fAuth = FirebaseAuth.getInstance();
@@ -74,7 +72,7 @@ public class LoginPage extends AppCompatActivity {
                     "Loading. Please wait...", true);
 
 
-            goToPage(fAuth.getUid());
+            goToPage(fAuth.getUid(), dialog);
         }
 
 
@@ -115,19 +113,20 @@ public class LoginPage extends AppCompatActivity {
                     return;
                 }
 
-                progressBar.setVisibility(View.VISIBLE);
+                ProgressDialog dialog = ProgressDialog.show(LoginPage.this, "",
+                        "Signing in...", true);
 
                 fAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-                            goToPage(fAuth.getUid());
+                            goToPage(fAuth.getUid(), dialog);
 
                         }
                         else {
                             Toast.makeText(LoginPage.this, task.getException().getLocalizedMessage().toString(), Toast.LENGTH_LONG).show();
-                            progressBar.setVisibility(View.GONE);
+                            dialog.dismiss();
                         }
                     }
                 });
@@ -137,7 +136,7 @@ public class LoginPage extends AppCompatActivity {
 
 
     // function to go to a particular uid's account related page
-    public void goToPage(String uid) {
+    public void goToPage(String uid, ProgressDialog dialog) {
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         db.child("account_type")
@@ -148,6 +147,8 @@ public class LoginPage extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
 
                         String accountType = task.getResult().getValue().toString();
+
+                        dialog.dismiss();
 
                         if (accountType.equals("Admin")) {
                             startActivity(new Intent(getApplicationContext(), AdminPage.class));
