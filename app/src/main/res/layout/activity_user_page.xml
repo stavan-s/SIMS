@@ -29,7 +29,7 @@
         android:textColor="@color/black"
         android:fontFamily="@font/archivo_black"
         android:textStyle="bold"
-        android:textSize="26sp"
+        android:textSize="30sp"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +38,7 @@
         android:layout_height="150dp"
         android:background="@drawable/card_bg_border"
         app:layout_constraintTop_toBottomOf="@id/student_page_welcome_display"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="35dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 

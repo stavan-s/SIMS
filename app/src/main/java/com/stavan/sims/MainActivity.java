@@ -4,14 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                         else {
-                            startActivity(new Intent(getApplicationContext(), LoginPage.class));
-                            finishAffinity();
+                            showSplashScreen();
                         }
                     }
 
@@ -60,5 +64,33 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).check();
 
+    }
+
+    private void showSplashScreen() {
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                // Check if user is already logged in with an account
+                if(fAuth.getCurrentUser() != null) {
+                    Misc.goToPage(getApplicationContext(), fAuth.getUid(), null);
+                }
+                else {
+                    startActivity(new Intent(getApplicationContext(), LoginPage.class));
+                    finishAffinity();
+                }
+
+            }
+        }, 1500);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finishAffinity();
     }
 }

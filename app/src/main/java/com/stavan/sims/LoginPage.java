@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -50,6 +51,7 @@ public class LoginPage extends AppCompatActivity {
     ImageView passView;
     int passToggle = 0;
     FirebaseAuth fAuth;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,17 +65,6 @@ public class LoginPage extends AppCompatActivity {
         passView = findViewById(R.id.pass_visible);
         passView.setBackgroundResource(R.drawable.ic_pass_view);
         fAuth = FirebaseAuth.getInstance();
-
-
-        // Check if user is already logged in with an account
-        if(fAuth.getCurrentUser() != null) {
-
-            ProgressDialog dialog = ProgressDialog.show(LoginPage.this, "",
-                    "Loading. Please wait...", true);
-
-
-            goToPage(fAuth.getUid(), dialog);
-        }
 
 
         // hide/view password toggle option
@@ -113,16 +104,14 @@ public class LoginPage extends AppCompatActivity {
                     return;
                 }
 
-                ProgressDialog dialog = ProgressDialog.show(LoginPage.this, "",
+                dialog = ProgressDialog.show(LoginPage.this, "",
                         "Signing in...", true);
 
                 fAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
-                            goToPage(fAuth.getUid(), dialog);
-
+                            Misc.goToPage(getApplicationContext(), fAuth.getUid(), dialog);
                         }
                         else {
                             Toast.makeText(LoginPage.this, task.getException().getLocalizedMessage().toString(), Toast.LENGTH_LONG).show();
@@ -134,40 +123,9 @@ public class LoginPage extends AppCompatActivity {
         });
     }
 
-
-    // function to go to a particular uid's account related page
-    public void goToPage(String uid, ProgressDialog dialog) {
-
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        db.child("account_type")
-                .child(uid)
-                .child("type")
-                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-
-                        String accountType = task.getResult().getValue().toString();
-
-                        dialog.dismiss();
-
-                        if (accountType.equals("Admin")) {
-                            startActivity(new Intent(getApplicationContext(), AdminPage.class));
-                            finishAffinity();
-                        }
-
-                        if (accountType.equals("Faculty")) {
-                            startActivity(new Intent(getApplicationContext(), FacultyPage.class));
-                            finishAffinity();
-                        }
-
-                        if (accountType.equals("Student")) {
-                            startActivity(new Intent(getApplicationContext(), UserPage.class));
-                            finishAffinity();
-                        }
-
-                    }
-                });
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finishAffinity();
     }
-
 }

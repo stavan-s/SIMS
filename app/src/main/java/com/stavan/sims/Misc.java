@@ -1,5 +1,8 @@
 package com.stavan.sims;
 
+import android.app.Activity;
+import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.ContactsContract;
@@ -77,6 +80,42 @@ public class Misc {
     public static int randNum(int high) {
         Random random = new Random();
         return random.nextInt(high);
+    }
+
+    // function to go to a particular uid's account related page
+    public static void goToPage(Context context, String uid, ProgressDialog dialog) {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("account_type")
+                .child(uid)
+                .child("type")
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                        if(dialog != null)
+                            dialog.dismiss();
+
+                        String accountType = task.getResult().getValue().toString();
+                        Intent intent = new Intent();
+
+                        if (accountType.equals("Admin")) {
+                            intent = new Intent(context, AdminPage.class);
+                        }
+
+                        if (accountType.equals("Faculty")) {
+                            intent = new Intent(context, FacultyPage.class);
+                        }
+
+                        if (accountType.equals("Student")) {
+                            intent = new Intent(context, UserPage.class);
+                        }
+
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                });
+
     }
 
 
