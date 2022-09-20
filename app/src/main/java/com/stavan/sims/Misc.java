@@ -1,15 +1,23 @@
 package com.stavan.sims;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -558,4 +566,132 @@ public class Misc {
         }
 
     }
+
+
+    public static void setDeptInput(Context context, TextView deptInput) {
+
+        ArrayList<String> depts = new ArrayList<>();
+
+        try {
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+            db.child("student_info")
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot dept : snapshot.getChildren()) {
+                                depts.add(dept.getKey().toString());
+                            }
+
+                            showLists(context, depts, deptInput);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+        }
+        catch (Exception e) {
+
+        }
+
+    }
+
+    public static void setClassInput(Context context, TextView classInput, String deptInputText) {
+
+        ArrayList<String> classNames = new ArrayList<>();
+
+        try {
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+            db.child("student_info")
+                    .child(deptInputText)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            for(DataSnapshot className : snapshot.getChildren()) {
+                                classNames.add(className.getKey().toString());
+                            }
+
+                            showLists(context, classNames, classInput);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+        }
+        catch (Exception e) {
+
+        }
+
+    }
+
+    public static void setDivInput(Context context, TextView divInput, String deptInputText, String classInputText) {
+
+        ArrayList<String> divs = new ArrayList<>();
+
+        try {
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+            db.child("student_info")
+                    .child(deptInputText)
+                    .child(classInputText)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            for(DataSnapshot divNames : snapshot.getChildren()) {
+                                divs.add(divNames.getKey().toString());
+                            }
+
+                            showLists(context, divs, divInput);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+        }
+        catch (Exception e) {
+
+        }
+    }
+
+    public static void showLists(Context context, ArrayList<String> list, TextView field) {
+
+        ListView listView = new ListView(context);
+        ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, list);
+        listView.setAdapter(adapter);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(true);
+        builder.setView(listView);
+
+        final AlertDialog dialog = builder.create();
+
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.CENTER);
+
+        try {
+            dialog.show();
+        }
+        catch (Exception e) {
+            return;
+        }
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                field.setText(list.get(i));
+                dialog.dismiss();
+                field.setTextColor(Color.parseColor("#000000"));
+            }
+        });
+
+    }
+
 }

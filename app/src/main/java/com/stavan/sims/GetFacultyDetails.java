@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,16 @@ public class GetFacultyDetails extends AppCompatActivity {
         numberInput = findViewById(R.id.get_info_fact_number_input);
         getBtn = findViewById(R.id.get_info_fact_get_btn);
 
+        deptInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(deptInput.getText()) && !deptInput.getText().equals("Department"))
+                    return;
+                Misc.setDeptInput(GetFacultyDetails.this, deptInput);
+            }
+        });
+
+
         getBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,8 +48,8 @@ public class GetFacultyDetails extends AppCompatActivity {
                 String deptName = deptInput.getText().toString().trim().toUpperCase();
                 String number = numberInput.getText().toString().trim();
 
-                if(deptName.isEmpty()) {
-                    deptInput.setError("Required!");
+                if(deptInput.getText().equals("Department")) {
+                    deptInput.setError("Required");
                     return;
                 }
 

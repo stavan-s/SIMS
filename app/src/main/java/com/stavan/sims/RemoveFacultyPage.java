@@ -3,6 +3,7 @@ package com.stavan.sims;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,15 @@ public class RemoveFacultyPage extends AppCompatActivity {
         numberInput = findViewById(R.id.remove_faculty_number_input);
         removeBtn = findViewById(R.id.remove_student_remove_btn);
 
+        deptInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(deptInput.getText()) && !deptInput.getText().equals("Department"))
+                    return;
+                Misc.setDeptInput(RemoveFacultyPage.this, deptInput);
+            }
+        });
+
         removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -33,7 +43,7 @@ public class RemoveFacultyPage extends AppCompatActivity {
                 String deptName = deptInput.getText().toString().trim().toUpperCase();
                 String number = numberInput.getText().toString().trim();
 
-                if(deptName.isEmpty()) {
+                if(deptInput.getText().equals("Department")) {
                     deptInput.setError("Required");
                     return;
                 }

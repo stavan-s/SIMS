@@ -45,6 +45,10 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
         lectureName = intent.getStringExtra("LecName").toString();
         ArrayList<String> absentRollNos = intent.getStringArrayListExtra("absentRollNos");
 
+        if(absentRollNos.size() == 0) {
+            absentRollNos.add("No absentees for this lecture");
+        }
+
         listView = findViewById(R.id.confirm_listview);
         submitBtn = findViewById(R.id.confirm_absentees_submit_btn);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, absentRollNos);
@@ -60,7 +64,7 @@ public class ConfirmAbsentRollsPage extends AppCompatActivity {
                     absentRollNosString += stringTokenizer.nextToken() + " ";
                 }
 
-                if (absentRollNosString.isEmpty()) {
+                if (absentRollNosString.equals("No ")) {
                     absentRollNosString = "null";
                 }
 

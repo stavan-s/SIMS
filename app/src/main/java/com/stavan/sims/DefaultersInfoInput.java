@@ -5,9 +5,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class DefaultersInfoInput extends AppCompatActivity {
 
@@ -24,6 +26,33 @@ public class DefaultersInfoInput extends AppCompatActivity {
         divInput = findViewById(R.id.defaulters_info_div_input);
         generateBtn = findViewById(R.id.defaulters_info_generate_btn);
 
+        deptInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(deptInput.getText()) && !deptInput.getText().equals("Department"))
+                    return;
+                Misc.setDeptInput(DefaultersInfoInput.this, deptInput);
+            }
+        });
+
+        classInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(classInput.getText()) && !classInput.getText().equals("Class"))
+                    return;
+                Misc.setClassInput(DefaultersInfoInput.this, classInput, deptInput.getText().toString());
+            }
+        });
+
+        divInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(divInput.getText()) && !divInput.getText().equals("Div"))
+                    return;
+                Misc.setDivInput(DefaultersInfoInput.this, divInput, deptInput.getText().toString() ,classInput.getText().toString());
+            }
+        });
+
         generateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,18 +61,18 @@ public class DefaultersInfoInput extends AppCompatActivity {
                 String className = classInput.getText().toString().toUpperCase().trim();
                 String divName = divInput.getText().toString().toUpperCase().trim();
 
-                if(deptName.isEmpty()) {
-                    deptInput.setError("Required!");
+                if(deptInput.getText().equals("Department") || deptName.isEmpty()) {
+                    deptInput.setError("Required");
                     return;
                 }
 
-                if(className.isEmpty()) {
-                    classInput.setError("Required!");
+                if(classInput.getText().equals("Class") || className.isEmpty()) {
+                    classInput.setError("Required");
                     return;
                 }
 
-                if(divName.isEmpty()) {
-                    divInput.setError("Required!");
+                if(divInput.getText().equals("Division") || divName.isEmpty()) {
+                    divInput.setError("Required");
                     return;
                 }
 

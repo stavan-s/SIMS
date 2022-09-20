@@ -4,12 +4,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CancellationSignal;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,7 +41,8 @@ import java.util.StringTokenizer;
 
 public class AddLecture extends AppCompatActivity {
 
-    EditText deptInput, classInput, divInput, lectureInput;
+    EditText lectureInput;
+    TextView deptInput, classInput, divInput;
     Button createBtn;
     String deptName, className, divName, lectureName;
 
@@ -48,28 +58,51 @@ public class AddLecture extends AppCompatActivity {
         lectureInput = findViewById(R.id.add_lec_lecture_input);
         createBtn = findViewById(R.id.add_lec_create_btn);
 
+        deptInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(deptInput.getText()) && !deptInput.getText().equals("Department"))
+                    return;
+                Misc.setDeptInput(AddLecture.this, deptInput);
+            }
+        });
+
+        classInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(classInput.getText()) && !classInput.getText().equals("Class"))
+                    return;
+                Misc.setClassInput(AddLecture.this, classInput, deptInput.getText().toString());
+            }
+        });
+
+        divInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(divInput.getText()) && !divInput.getText().equals("Div"))
+                    return;
+                Misc.setDivInput(AddLecture.this, divInput, deptInput.getText().toString() ,classInput.getText().toString());
+            }
+        });
 
         // click to create a new lecture of the specified class
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                deptName = deptInput.getText().toString().toUpperCase().trim();
-                className = classInput.getText().toString().toUpperCase().trim();
-                divName = divInput.getText().toString().toUpperCase().trim();
                 lectureName = lectureInput.getText().toString().toUpperCase().trim();
 
-                if(deptName.isEmpty()) {
+                if(deptInput.getText().equals("Department")) {
                     deptInput.setError("Required");
                     return;
                 }
 
-                if(className.isEmpty()) {
+                if(classInput.getText().equals("Class")) {
                     classInput.setError("Required");
                     return;
                 }
 
-                if(divName.isEmpty()) {
+                if(divInput.getText().equals("Division")) {
                     divInput.setError("Required");
                     return;
                 }
@@ -79,15 +112,44 @@ public class AddLecture extends AppCompatActivity {
                     return;
                 }
 
-                deptName = deptName.toUpperCase();
-                className = className.toUpperCase();
-                divName = divName.toUpperCase();
                 lectureName = lectureName.toUpperCase();
 
-                validateInput();
+                deptName = deptInput.getText().toString();
+                className = classInput.getText().toString();
+                divName = divInput.getText().toString();
+
+                checkLectureExists();
 
             }
         });
+
+    }
+
+    private void checkLectureExists() {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("lecture_info")
+                .child(deptName)
+                .child(className)
+                .child(divName)
+                .child(lectureName)
+                .child(Misc.getDate())
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                        if(task.isSuccessful()) {
+                            if(task.getResult().exists()) {
+                                Toast.makeText(AddLecture.this, "Lecture already exists", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            else {
+                                addLecture(deptName, className, divName, lectureName, Misc.getDate());
+                            }
+                        }
+
+                    }
+                });
 
     }
 
@@ -169,26 +231,9 @@ public class AddLecture extends AppCompatActivity {
 
     }
 
-
-    private void validateInput() {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-
-        db.child("student_info")
-                .child(deptName)
-                .child(className)
-                .child(divName)
-                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if(!task.getResult().exists()) {
-                            Toast.makeText(AddLecture.this, "Invalid details were provided", Toast.LENGTH_SHORT).show();
-                            onBackPressed();
-                        }
-                        else {
-                            addLecture(deptName, className, divName, lectureName, Misc.getDate());
-                        }
-                    }
-                });
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
-
 }

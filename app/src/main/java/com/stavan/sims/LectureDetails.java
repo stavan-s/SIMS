@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,33 @@ public class LectureDetails extends AppCompatActivity {
         lectureInput = findViewById(R.id.upload_lecture_input);
         proceedBtn = findViewById(R.id.upload_proceed_btn);
 
+        deptInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(deptInput.getText()) && !deptInput.getText().equals("Department"))
+                    return;
+                Misc.setDeptInput(LectureDetails.this, deptInput);
+            }
+        });
+
+        classInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(classInput.getText()) && !classInput.getText().equals("Class"))
+                    return;
+                Misc.setClassInput(LectureDetails.this, classInput, deptInput.getText().toString());
+            }
+        });
+
+        divInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(divInput.getText()) && !divInput.getText().equals("Div"))
+                    return;
+                Misc.setDivInput(LectureDetails.this, divInput, deptInput.getText().toString() ,classInput.getText().toString());
+            }
+        });
+
         callingActivity = getIntent().getStringExtra("CallingActivity");
 
         proceedBtn.setOnClickListener(new View.OnClickListener() {
@@ -42,17 +70,17 @@ public class LectureDetails extends AppCompatActivity {
 //                divName = "B";
 //                lectureName = "LINUX";
 
-                if(deptName.isEmpty()) {
+                if(deptInput.getText().equals("Department")) {
                     deptInput.setError("Required");
                     return;
                 }
 
-                if(className.isEmpty()) {
+                if(classInput.getText().equals("Class")) {
                     classInput.setError("Required");
                     return;
                 }
 
-                if(divName.isEmpty()) {
+                if(divInput.getText().equals("Division")) {
                     divInput.setError("Required");
                     return;
                 }

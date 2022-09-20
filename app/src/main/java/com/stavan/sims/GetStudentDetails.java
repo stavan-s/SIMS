@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +21,7 @@ import java.util.Locale;
 
 public class GetStudentDetails extends AppCompatActivity {
 
-    EditText studDept, studClass, studDiv, studRoll;
+    EditText deptInput, classInput, divInput, studRoll;
     Button getBtn;
     String callingActivity;
 
@@ -29,21 +30,48 @@ public class GetStudentDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_student_details);
 
-        studDept = findViewById(R.id.get_info_stud_dept_name_input);
-        studClass = findViewById(R.id.get_info_stud_class_input);
-        studDiv = findViewById(R.id.get_info_stud_div_input);
+        deptInput = findViewById(R.id.get_info_stud_dept_name_input);
+        classInput = findViewById(R.id.get_info_stud_class_input);
+        divInput = findViewById(R.id.get_info_stud_div_input);
         studRoll = findViewById(R.id.get_info_stud_roll_input);
         getBtn = findViewById(R.id.get_info_stud_get_btn);
         callingActivity = getIntent().getStringExtra("CallingActivity");
+
+        deptInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(deptInput.getText()) && !deptInput.getText().equals("Department"))
+                    return;
+                Misc.setDeptInput(GetStudentDetails.this, deptInput);
+            }
+        });
+
+        classInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(classInput.getText()) && !classInput.getText().equals("Class"))
+                    return;
+                Misc.setClassInput(GetStudentDetails.this, classInput, deptInput.getText().toString());
+            }
+        });
+
+        divInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!TextUtils.isEmpty(divInput.getText()) && !divInput.getText().equals("Div"))
+                    return;
+                Misc.setDivInput(GetStudentDetails.this, divInput, deptInput.getText().toString() ,classInput.getText().toString());
+            }
+        });
 
 
         getBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String deptName = studDept.getText().toString().trim().toUpperCase();
-                String className = studClass.getText().toString().trim().toUpperCase();
-                String divName = studDiv.getText().toString().trim().toUpperCase();
+                String deptName = deptInput.getText().toString().trim().toUpperCase();
+                String className = classInput.getText().toString().trim().toUpperCase();
+                String divName = divInput.getText().toString().trim().toUpperCase();
                 String rollNo = studRoll.getText().toString().trim().toUpperCase();
 
 //                deptName = "CS";
@@ -51,18 +79,18 @@ public class GetStudentDetails extends AppCompatActivity {
 //                divName = "B";
 //                rollNo = "5146";
 
-                if(deptName.isEmpty()) {
-                    studDept.setError("Required!");
+                if(deptInput.getText().equals("Department")) {
+                    deptInput.setError("Required");
                     return;
                 }
 
-                if(className.isEmpty()) {
-                    studClass.setError("Required!");
+                if(classInput.getText().equals("Class")) {
+                    classInput.setError("Required");
                     return;
                 }
 
-                if(divName.isEmpty()) {
-                    studDiv.setError("Required!");
+                if(divInput.getText().equals("Division")) {
+                    divInput.setError("Required");
                     return;
                 }
 
