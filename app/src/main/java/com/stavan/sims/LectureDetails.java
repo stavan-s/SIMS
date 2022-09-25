@@ -1,5 +1,6 @@
 package com.stavan.sims;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,6 +9,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LectureDetails extends AppCompatActivity {
 
@@ -95,16 +103,39 @@ public class LectureDetails extends AppCompatActivity {
                 divName = divName.toUpperCase();
                 lectureName = lectureName.toUpperCase();
 
-                Intent intent = new Intent(getApplicationContext(), UploadResourcesPage.class);
-                intent.putExtra("DeptName", deptName);
-                intent.putExtra("ClassName", className);
-                intent.putExtra("DivName", divName);
-                intent.putExtra("LectName", lectureName);
-                intent.putExtra("CallingActivity", callingActivity);
-                startActivity(intent);
+                validateInput();
 
             }
         });
+
+    }
+
+    private void validateInput() {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("student_info")
+                .child(deptName)
+                .child(className)
+                .child(divName)
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            if(task.getResult().exists()) {
+                                Intent intent = new Intent(getApplicationContext(), UploadResourcesPage.class);
+                                intent.putExtra("DeptName", deptName);
+                                intent.putExtra("ClassName", className);
+                                intent.putExtra("DivName", divName);
+                                intent.putExtra("LectName", lectureName);
+                                intent.putExtra("CallingActivity", callingActivity);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(LectureDetails.this, "Invalid Details!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
 
     }
 }

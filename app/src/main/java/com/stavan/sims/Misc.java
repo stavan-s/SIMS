@@ -601,6 +601,10 @@ public class Misc {
 
         ArrayList<String> classNames = new ArrayList<>();
 
+        if(deptInputText.equals("")) {
+            return;
+        }
+
         try {
             DatabaseReference db = FirebaseDatabase.getInstance().getReference();
             db.child("student_info")
@@ -632,6 +636,10 @@ public class Misc {
     public static void setDivInput(Context context, TextView divInput, String deptInputText, String classInputText) {
 
         ArrayList<String> divs = new ArrayList<>();
+
+        if(classInputText.equals("")) {
+            return;
+        }
 
         try {
             DatabaseReference db = FirebaseDatabase.getInstance().getReference();
@@ -693,5 +701,6 @@ public class Misc {
         });
 
     }
+
 
 }

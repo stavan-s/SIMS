@@ -24,6 +24,7 @@ public class GetStudentDetails extends AppCompatActivity {
     EditText deptInput, classInput, divInput, studRoll;
     Button getBtn;
     String callingActivity;
+    String deptName, className, divName, rollNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +70,10 @@ public class GetStudentDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String deptName = deptInput.getText().toString().trim().toUpperCase();
-                String className = classInput.getText().toString().trim().toUpperCase();
-                String divName = divInput.getText().toString().trim().toUpperCase();
-                String rollNo = studRoll.getText().toString().trim().toUpperCase();
+                deptName = deptInput.getText().toString().trim().toUpperCase();
+                className = classInput.getText().toString().trim().toUpperCase();
+                divName = divInput.getText().toString().trim().toUpperCase();
+                rollNo = studRoll.getText().toString().trim().toUpperCase();
 
 //                deptName = "CS";
 //                className = "TYCS";
@@ -100,7 +101,6 @@ public class GetStudentDetails extends AppCompatActivity {
                 }
 
                 getStudentDetails(deptName, className, divName, rollNo);
-
             }
         });
 
@@ -135,4 +135,5 @@ public class GetStudentDetails extends AppCompatActivity {
                 });
 
     }
+
 }

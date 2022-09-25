@@ -1,5 +1,6 @@
 package com.stavan.sims;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -11,10 +12,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class DefaultersInfoInput extends AppCompatActivity {
 
     EditText deptInput, classInput, divInput;
     Button generateBtn;
+    String deptName, className, divName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +65,9 @@ public class DefaultersInfoInput extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String deptName = deptInput.getText().toString().toUpperCase().trim();
-                String className = classInput.getText().toString().toUpperCase().trim();
-                String divName = divInput.getText().toString().toUpperCase().trim();
+                deptName = deptInput.getText().toString().toUpperCase().trim();
+                className = classInput.getText().toString().toUpperCase().trim();
+                divName = divInput.getText().toString().toUpperCase().trim();
 
                 if(deptInput.getText().equals("Department") || deptName.isEmpty()) {
                     deptInput.setError("Required");
@@ -76,14 +84,37 @@ public class DefaultersInfoInput extends AppCompatActivity {
                     return;
                 }
 
-                Intent intent = new Intent(getApplicationContext(), ViewDefaulters.class);
-                intent.putExtra("DeptName", deptName);
-                intent.putExtra("ClassName", className);
-                intent.putExtra("DivName", divName);
-                startActivity(intent);
+                validateInput();
 
             }
         });
+
+    }
+
+    private void validateInput() {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("student_info")
+                .child(deptName)
+                .child(className)
+                .child(divName)
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            if(task.getResult().exists()) {
+                                Intent intent = new Intent(getApplicationContext(), ViewDefaulters.class);
+                                intent.putExtra("DeptName", deptName);
+                                intent.putExtra("ClassName", className);
+                                intent.putExtra("DivName", divName);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(DefaultersInfoInput.this, "Invalid Details!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
 
     }
 }

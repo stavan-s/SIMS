@@ -90,8 +90,6 @@ public class AddLecture extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                lectureName = lectureInput.getText().toString().toUpperCase().trim();
-
                 if(deptInput.getText().equals("Department")) {
                     deptInput.setError("Required");
                     return;
@@ -107,21 +105,43 @@ public class AddLecture extends AppCompatActivity {
                     return;
                 }
 
+                lectureName = lectureInput.getText().toString().toUpperCase().trim();
                 if(lectureName.isEmpty()) {
                     lectureInput.setError("Required");
                     return;
                 }
 
-                lectureName = lectureName.toUpperCase();
+                deptName = deptInput.getText().toString().toUpperCase().trim();
+                className = classInput.getText().toString().toUpperCase().trim();
+                divName = divInput.getText().toString().toUpperCase().trim();
 
-                deptName = deptInput.getText().toString();
-                className = classInput.getText().toString();
-                divName = divInput.getText().toString();
-
-                checkLectureExists();
+                validateInput();
 
             }
         });
+
+    }
+
+    private void validateInput() {
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("student_info")
+                .child(deptName)
+                .child(className)
+                .child(divName)
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            if(task.getResult().exists()) {
+                                checkLectureExists();
+                            }
+                            else {
+                                Toast.makeText(AddLecture.this, "Invalid Details!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
 
     }
 
