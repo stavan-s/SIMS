@@ -605,6 +605,8 @@ public class Misc {
             return;
         }
 
+        deptInputText = deptInputText.toUpperCase().trim();
+
         try {
             DatabaseReference db = FirebaseDatabase.getInstance().getReference();
             db.child("student_info")
@@ -640,6 +642,9 @@ public class Misc {
         if(classInputText.equals("")) {
             return;
         }
+
+        deptInputText = deptInputText.toUpperCase().trim();
+        classInputText  = classInputText.toUpperCase().trim();
 
         try {
             DatabaseReference db = FirebaseDatabase.getInstance().getReference();
